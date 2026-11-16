@@ -91,7 +91,9 @@ export const DiskMonitor = GObject.registerClass(
       this.meter.setOrientation(Orientation.Vertical);
       this.add_child(this.meter);
 
-      const vbox = new St.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
+      const vbox = new St.BoxLayout({
+        orientation: Clutter.Orientation.VERTICAL,
+      });
       this.add_child(vbox);
 
       const valueRead = new St.Label({
