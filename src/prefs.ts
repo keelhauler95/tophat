@@ -103,6 +103,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
       control = accentRow.get_activatable_widget() as Gtk.Switch;
     }
     this.addColorRow(_('Meter color'), 'meter-fg-color', group, control);
+    this.addActionRow(_('Round meter bars'), 'round-meter-bars', group);
 
     // Show icons
     this.addActionRow(_('Show icons beside monitors'), 'show-icons', group);

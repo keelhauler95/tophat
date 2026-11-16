@@ -75,6 +75,26 @@
   margin-right: 0;
 }
 
+.tophat-meter.tophat-meter-rounded {
+  border-radius: 4px;
+}
+
+.tophat-meter.tophat-meter-rounded .tophat-meter-bar {
+  border-radius: 4px 4px 0 0;
+}
+
+.tophat-meter.tophat-meter-rounded .tophat-meter-bar-first {
+  border-radius: 4px 4px 0 4px;
+}
+
+.tophat-meter.tophat-meter-rounded .tophat-meter-bar-last {
+  border-radius: 4px 4px 4px 0;
+}
+
+.tophat-meter.tophat-meter-rounded .tophat-meter-bar-only {
+  border-radius: 4px;
+}
+
 .tophat-menu-grid {
   margin: 0.25em 0.25em 1em 0.25em;
   padding: 0;
@@ -147,16 +167,19 @@
   border-radius: 4px;
   margin: 12px 6px;
   height: 6em;
+  padding: 0 4px;
 }
 
 .tophat-chart-stacked-top {
-  margin-bottom: 1px;
+  margin-bottom: 0;
   height: 3em;
+  border-radius: 4px 4px 0 0;
 }
 
 .tophat-chart-stacked-bottom {
   margin-top: 0;
   height: 3em;
+  border-radius: 0 0 4px 4px;
 }
 
 .tophat-chart-label {
@@ -183,10 +206,15 @@
   min-width: 4px;
   min-height: 2px;
   margin-right: 1px;
+  border-radius: 9999px 9999px 0 0;
 }
 
 .tophat-chart-bar:last-child {
   margin-right: 0;
+}
+
+.tophat-chart-stacked-bottom .tophat-chart-bar {
+  border-radius: 0 0 9999px 9999px;
 }
 
 .tophat-tooltip {

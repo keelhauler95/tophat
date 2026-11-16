@@ -108,6 +108,11 @@
       <summary>Color of the meter bars and chart areas</summary>
       <description>The color of meter bars and chart areas, in either hex or RGBA format.</description>
     </key>
+    <key name="round-meter-bars" type="b">
+      <default>false</default>
+      <summary>Round meter bars</summary>
+      <description>Round the corners of the meter track and its filled bars.</description>
+    </key>
     <!-- <key name="meter-bar-width" type="d">
       <default>0.6</default>
       <summary>Width of the meter bars</summary>
