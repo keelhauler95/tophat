@@ -145,6 +145,7 @@ export const TopHatMonitor = GObject.registerClass(
       this.add_child(this.icon);
 
       this.meter = new TopHatMeter();
+      this.meter.setRoundedBars(this.gsettings.get_boolean('round-meter-bars'));
       [this.color, this.useAccentColor] = this.updateColor();
       this.menuActionBox = new St.BoxLayout({
         style_class: 'tophat-menu-button-box',
@@ -179,6 +180,12 @@ export const TopHatMonitor = GObject.registerClass(
       );
       let id = this.gsettings.connect('changed::meter-fg-color', () => {
         [this.color, this.useAccentColor] = this.updateColor();
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::round-meter-bars', () => {
+        this.meter.setRoundedBars(
+          this.gsettings.get_boolean('round-meter-bars')
+        );
       });
       this.settingsSignals.push(id);
       id = this.gsettings.connect('changed::use-system-accent', () => {

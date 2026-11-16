@@ -82,12 +82,23 @@ export const TopHatMeter = GObject.registerClass(
       this.barUsage = new Array<number>(n);
       this.barWidth = this.computeBarWidth(n);
       for (let i = 0; i < n; i++) {
+        const styleClasses = ['tophat-meter-bar'];
+        if (n === 1) {
+          styleClasses.push('tophat-meter-bar-only');
+        } else {
+          if (i === 0) {
+            styleClasses.push('tophat-meter-bar-first');
+          }
+          if (i === n - 1) {
+            styleClasses.push('tophat-meter-bar-last');
+          }
+        }
         this.bars[i] = new St.Widget({
           y_align: Clutter.ActorAlign.END,
           y_expand: false,
           width: this.barWidth,
           height: 1 * this.scaleFactor,
-          style_class: 'tophat-meter-bar',
+          style_class: styleClasses.join(' '),
           name: 'TopHatMeterBar',
         });
         setBarColor(this.bars[i], this.color);
@@ -121,6 +132,15 @@ export const TopHatMeter = GObject.registerClass(
 
     public setOrientation(o: Orientation) {
       this.meterOrientation = o;
+    }
+
+    public setRoundedBars(rounded: boolean) {
+      this.set_clip_to_allocation(rounded);
+      if (rounded) {
+        this.add_style_class_name('tophat-meter-rounded');
+      } else {
+        this.remove_style_class_name('tophat-meter-rounded');
+      }
     }
 
     public setBarSizes(n: number[]) {
@@ -208,7 +228,7 @@ export const TopHatMeter = GObject.registerClass(
       }
       for (let i = 0; i < this.bars.length; i++) {
         this.bars[i].remove_style_class_name('tophat-meter-bar');
-        this.bars[i].set_style_class_name('tophat-meter-bar');
+        this.bars[i].add_style_class_name('tophat-meter-bar');
       }
     }
 

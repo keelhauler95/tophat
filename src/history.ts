@@ -70,6 +70,7 @@ export const HistoryChart = GObject.registerClass(
         });
       }
       this.chart = new St.BoxLayout({ style_class: 'tophat-chart' });
+      this.chart.set_clip_to_allocation(true);
       if (this.chartStyle === HistoryStyle.DUAL) {
         this.barsAlt = new Array<St.Widget>(MaxHistoryLen);
         for (let i = 0; i < MaxHistoryLen; i++) {
@@ -82,9 +83,11 @@ export const HistoryChart = GObject.registerClass(
             height: 0,
           });
         }
-        this.chartAlt = new St.BoxLayout({
+        const chartAlt = new St.BoxLayout({
           style_class: 'tophat-chart tophat-chart-stacked-bottom',
         });
+        chartAlt.set_clip_to_allocation(true);
+        this.chartAlt = chartAlt;
       } else {
         this.barsAlt = null;
         this.chartAlt = null;
