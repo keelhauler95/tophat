@@ -40,6 +40,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
       window.add(this.buildGeneralPage());
       window.add(this.buildCpuPage());
       window.add(this.buildGpuPage());
+      window.add(this.buildNpuPage());
       window.add(this.buildMemPage());
       window.add(this.buildDiskPage());
       window.add(this.buildNetPage());
@@ -152,6 +153,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
       disk: _('Disk'),
       net: _('Network'),
       gpu: _('GPU'),
+      npu: _('NPU'),
     };
     let rows = new Array<Adw.ActionRow>();
 
@@ -242,6 +244,25 @@ export default class TopHatPrefs extends ExtensionPreferences {
       _('Show usage value in panel'),
       'gpu-show-value',
       ['show-gpu'],
+      group
+    );
+    return page;
+  }
+
+  private buildNpuPage() {
+    const page = new Adw.PreferencesPage({
+      title: _('NPU'),
+      iconName: 'tophat-brain-augmented-symbolic',
+    });
+    const group = new Adw.PreferencesGroup({ title: _('NPU') });
+    page.add(group);
+
+    this.addActionRow(_('Show NPU monitors'), 'show-npu', group);
+
+    this.addConditionalActionRow(
+      _('Show usage value in panel'),
+      'npu-show-value',
+      ['show-npu'],
       group
     );
     return page;

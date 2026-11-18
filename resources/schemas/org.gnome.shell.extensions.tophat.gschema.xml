@@ -35,9 +35,9 @@
       <description>Where in the panel the monitors should be positioned.</description>
     </key>
     <key name="monitor-order" type="as">
-      <default>['cpu', 'mem', 'disk', 'net', 'gpu']</default>
+      <default>['cpu', 'mem', 'disk', 'net', 'gpu', 'npu']</default>
       <summary>Order of the monitors in the panel</summary>
-      <description>The order in which the monitors are shown in the panel, from first to last. Valid entries are cpu, mem, disk, net, and gpu.</description>
+      <description>The order in which the monitors are shown in the panel, from first to last. Valid entries are cpu, mem, disk, net, gpu, and npu.</description>
     </key>
         <key name="cpu-display" enum="org.gnome.shell.extensions.tophat.visualization">
       <default>'chart'</default>
@@ -119,6 +119,16 @@
       <default>true</default>
       <summary>Show GPU usage value in the panel</summary>
       <description>Display GPU usage values next to the GPU monitors.</description>
+    </key>
+    <key name="show-npu" type="b">
+      <default>true</default>
+      <summary>Show NPU monitors</summary>
+      <description>Show a monitor for each detected NPU.</description>
+    </key>
+    <key name="npu-show-value" type="b">
+      <default>true</default>
+      <summary>Show NPU usage value in the panel</summary>
+      <description>Display NPU usage values next to the NPU monitors.</description>
     </key>
     <key name="show-fs" type="b">
       <default>true</default>

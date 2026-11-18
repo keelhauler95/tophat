@@ -1,7 +1,8 @@
 # TopHat
 
 TopHat aims to be an elegant system resource monitor for the GNOME shell. It
-displays CPU, memory, disk, and network activity in the GNOME top bar.
+displays CPU, memory, disk, and network activity, plus detected GPU and NPU
+utilization, in the GNOME top bar.
 
 <img src="./screenshots/tophat.png?raw=true" width="1080px" alt="Screenshot of
 TopHat">
@@ -22,6 +23,15 @@ page](https://extensions.gnome.org/extension/5219/tophat/).
   44 in the legacy branch at https://github.com/fflewddur/tophat/tree/legacy)
 - A modestly recent release of the Linux kernel (anything >= 5.0 should work)
 - NetworkManager (to monitor network devices)
+
+GPU and NPU metrics depend on the interfaces exposed by the kernel driver.
+TopHat reads DRM sysfs and hwmon metrics where available. AMD XDNA NPU
+utilization is read from the driver's sensor interface (the same method used
+by Resources and Lemonade) through a small Python helper, `npu-sensors.py`,
+so `python3` must be installed; if the helper is unavailable, utilization is
+estimated from accessible DRM `fdinfo` counters instead. A device can appear
+with unavailable metrics when its driver does not expose a supported
+interface.
 
 ### Compatibility
 
@@ -139,5 +149,13 @@ Co.](https://thenonproject.com/LoudounDesignCo/)
 icons/net.svg: [Pixel Bazaar](https://thenounproject.com/pixelbazaar/)
 
 All icons were edited to make them more legible at small sizes.
+
+The bundled panel icons `processor.svg`, `memory.svg`, `pci.svg`,
+`brain-augmented.svg`, `drive-harddisk.svg`, and `arrows-bidirectional.svg` (and their
+`tophat-*-symbolic.svg` copies in `icons/symbolic`, used by the preferences
+window) are from the
+[GNOME symbolic icon catalog](https://icons.design.gnome.org/) and are
+licensed under CC0 1.0. Their original creator metadata is retained in each
+SVG.
 
 [license]: LICENSE
