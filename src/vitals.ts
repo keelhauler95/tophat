@@ -2157,6 +2157,12 @@ function refreshRateModifier(settings: Gio.Settings): number {
     case 'fast':
       modifier = 0.5;
       break;
+    case 'faster':
+      modifier = 0.25;
+      break;
+    case 'fastest':
+      modifier = 0.125;
+      break;
   }
   return modifier;
 }

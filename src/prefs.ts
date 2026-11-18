@@ -88,6 +88,8 @@ export default class TopHatPrefs extends ExtensionPreferences {
     choices.append(_('Slow'));
     choices.append(_('Medium'));
     choices.append(_('Fast'));
+    choices.append(_('Faster'));
+    choices.append(_('Fastest'));
     this.addComboRow(_('Refresh speed'), choices, 'refresh-rate', group);
 
     // Meter color
