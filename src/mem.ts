@@ -49,6 +49,7 @@ export const MemMonitor = GObject.registerClass(
     private topProcs: TopProc[];
     private displayType: DisplayType;
     private absUnits;
+    private showValue: boolean;
 
     constructor(metadata: ExtensionMetadata, gsettings: Gio.Settings) {
       super('Memory Monitor', metadata, gsettings);
@@ -72,13 +73,20 @@ export const MemMonitor = GObject.registerClass(
       this.menuSwapCap = new CapacityBar();
       this.menuSwapSize = new St.Label();
       this.historyChart = new HistoryChart();
+      this.bindHistoryAreaSettings('mem-history-area', 'mem-history-soft-fill');
       this.topProcs = new Array<TopProc>(NumTopProcs);
       for (let i = 0; i < NumTopProcs; i++) {
         this.topProcs[i] = new TopProc();
       }
 
+      this.showValue = gsettings.get_boolean('mem-show-value');
       this.displayType = this.updateDisplayType();
       let id = this.gsettings.connect('changed::mem-display', () => {
+        this.updateDisplayType();
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::mem-show-value', (settings) => {
+        this.showValue = settings.get_boolean('mem-show-value');
         this.updateDisplayType();
       });
       this.settingsSignals.push(id);
@@ -107,18 +115,9 @@ export const MemMonitor = GObject.registerClass(
 
     private updateDisplayType() {
       this.displayType = getDisplayTypeSetting(this.gsettings, 'mem-display');
-      if (this.displayType === DisplayType.Both) {
-        this.usage.show();
-        this.meter.show();
-      } else {
-        if (this.displayType === DisplayType.Chart) {
-          this.usage.hide();
-          this.meter.show();
-        } else {
-          this.usage.show();
-          this.meter.hide();
-        }
-      }
+      this.usage.visible =
+        this.showValue && this.displayType !== DisplayType.Chart;
+      this.meter.visible = this.displayType !== DisplayType.Numeric;
       return this.displayType;
     }
 

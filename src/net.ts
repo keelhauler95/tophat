@@ -148,6 +148,7 @@ export const NetMonitor = GObject.registerClass(
       this.menuNetUpTotal = new St.Label();
       this.menuNetDownTotal = new St.Label();
       this.historyChart = new HistoryChart(HistoryStyle.DUAL);
+      this.bindHistoryAreaSettings('net-history-area', 'net-history-soft-fill');
       this.usageUnit = this.gsettings.get_string('network-usage-unit');
       let id = this.gsettings.connect(
         'changed::network-usage-unit',

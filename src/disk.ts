@@ -115,6 +115,10 @@ export const DiskMonitor = GObject.registerClass(
       this.menuDiskWritesTotal = new St.Label();
       this.menuDiskReadsTotal = new St.Label();
       this.historyChart = new HistoryChart(HistoryStyle.DUAL);
+      this.bindHistoryAreaSettings(
+        'disk-history-area',
+        'disk-history-soft-fill'
+      );
       this.topProcs = new Array<TopProc>(NumTopProcs);
       for (let i = 0; i < NumTopProcs; i++) {
         this.topProcs[i] = new TopProc();
@@ -129,7 +133,15 @@ export const DiskMonitor = GObject.registerClass(
         this.updateVisibility(settings);
       });
       this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::disk-show-values', (settings) => {
+        this.updateVisibility(settings);
+      });
+      this.settingsSignals.push(id);
       id = this.gsettings.connect('changed::fs-display', (settings) => {
+        this.updateVisibility(settings);
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::fs-show-value', (settings) => {
         this.updateVisibility(settings);
       });
       this.settingsSignals.push(id);
@@ -146,11 +158,14 @@ export const DiskMonitor = GObject.registerClass(
     private updateVisibility(settings: Gio.Settings) {
       const showDisk = settings.get_boolean('show-disk');
       const showFS = settings.get_boolean('show-fs');
+      const showDiskValues = settings.get_boolean('disk-show-values');
+      const showFSValue = settings.get_boolean('fs-show-value');
       const displayType = getDisplayTypeSetting(settings, 'fs-display');
-      this.valueRead.visible = showDisk;
-      this.valueWrite.visible = showDisk;
+      this.valueRead.visible = showDisk && showDiskValues;
+      this.valueWrite.visible = showDisk && showDiskValues;
       this.usage.visible =
         showFS &&
+        showFSValue &&
         (displayType === DisplayType.Both ||
           displayType === DisplayType.Numeric);
       this.meter.visible =

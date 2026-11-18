@@ -237,6 +237,10 @@ export const AcceleratorMonitor = GObject.registerClass(
       this.historyChart.setYLabelTop('100%');
       this.historyChart.setYLabelMiddle('50%');
       this.historyChart.setYLabelBottom('0%');
+      this.bindHistoryAreaSettings(
+        `${device.kind}-history-area`,
+        `${device.kind}-history-soft-fill`
+      );
       this.historyChart.update(this.history);
 
       this.menuUsage = new St.Label({ text: MeterNoVal });

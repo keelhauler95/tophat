@@ -47,6 +47,7 @@ export const CpuMonitor = GObject.registerClass(
     private sortCores;
     private normalizeProcUsage;
     private displayType: DisplayType;
+    private showValue: boolean;
 
     constructor(metadata: ExtensionMetadata, gsettings: Gio.Settings) {
       super('CPU Monitor', metadata, gsettings);
@@ -62,6 +63,13 @@ export const CpuMonitor = GObject.registerClass(
 
       this.meter.setNumBars(1);
       this.meter.setOrientation(Orientation.Vertical);
+      this.meter.setLineMode(this.gsettings.get_boolean('cpu-line-chart'));
+      this.meter.setLineSeparators(
+        this.gsettings.get_boolean('cpu-line-separators')
+      );
+      this.meter.setLineSoftFill(
+        this.gsettings.get_boolean('cpu-line-soft-fill')
+      );
       this.add_child(this.meter);
 
       this.menuCpuUsage = new St.Label();
@@ -71,6 +79,7 @@ export const CpuMonitor = GObject.registerClass(
       this.menuCpuTemp = new St.Label();
       this.menuUptime = new St.Label();
       this.historyChart = new HistoryChart();
+      this.bindHistoryAreaSettings('cpu-history-area', 'cpu-history-soft-fill');
       this.topProcs = new Array<TopProc>(NumTopProcs);
       for (let i = 0; i < NumTopProcs; i++) {
         this.topProcs[i] = new TopProc();
@@ -82,6 +91,23 @@ export const CpuMonitor = GObject.registerClass(
         if (!this.showCores) {
           this.meter.setNumBars(1);
         }
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::cpu-line-chart', (settings) => {
+        this.meter.setLineMode(settings.get_boolean('cpu-line-chart'));
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect(
+        'changed::cpu-line-separators',
+        (settings) => {
+          this.meter.setLineSeparators(
+            settings.get_boolean('cpu-line-separators')
+          );
+        }
+      );
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::cpu-line-soft-fill', (settings) => {
+        this.meter.setLineSoftFill(settings.get_boolean('cpu-line-soft-fill'));
       });
       this.settingsSignals.push(id);
       this.sortCores = this.gsettings.get_boolean('cpu-sort-cores');
@@ -101,8 +127,14 @@ export const CpuMonitor = GObject.registerClass(
         }
       );
       this.settingsSignals.push(id);
+      this.showValue = this.gsettings.get_boolean('cpu-show-value');
       this.displayType = this.updateDisplayType();
       id = this.gsettings.connect('changed::cpu-display', () => {
+        this.updateDisplayType();
+      });
+      this.settingsSignals.push(id);
+      id = this.gsettings.connect('changed::cpu-show-value', (settings) => {
+        this.showValue = settings.get_boolean('cpu-show-value');
         this.updateDisplayType();
       });
       this.settingsSignals.push(id);
@@ -122,18 +154,9 @@ export const CpuMonitor = GObject.registerClass(
 
     private updateDisplayType() {
       this.displayType = getDisplayTypeSetting(this.gsettings, 'cpu-display');
-      if (this.displayType === DisplayType.Both) {
-        this.usage.show();
-        this.meter.show();
-      } else {
-        if (this.displayType === DisplayType.Chart) {
-          this.usage.hide();
-          this.meter.show();
-        } else {
-          this.usage.show();
-          this.meter.hide();
-        }
-      }
+      this.usage.visible =
+        this.showValue && this.displayType !== DisplayType.Chart;
+      this.meter.visible = this.displayType !== DisplayType.Numeric;
       return this.displayType;
     }
 

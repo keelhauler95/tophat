@@ -343,6 +343,7 @@ export const TopHatMonitor = GObject.registerClass(
       const updateInterval = () => {
         this.updateIntervalMs = vitals.summary_interval * 1000;
         this.meter.setUpdateInterval(this.updateIntervalMs);
+        this.historyChart?.setUpdateInterval(this.updateIntervalMs);
       };
       if (vitals.summary_interval > 0) {
         updateInterval();
@@ -353,6 +354,32 @@ export const TopHatMonitor = GObject.registerClass(
         this.historyChart?.setThen(then);
       });
       this.vitalsSignals.push(id);
+    }
+
+    protected bindHistoryAreaSettings(
+      areaSetting: string,
+      softFillSetting: string
+    ) {
+      this.historyChart?.setAreaMode(this.gsettings.get_boolean(areaSetting));
+      this.historyChart?.setAreaSoftFill(
+        this.gsettings.get_boolean(softFillSetting)
+      );
+      const areaId = this.gsettings.connect(
+        `changed::${areaSetting}`,
+        (settings) => {
+          this.historyChart?.setAreaMode(settings.get_boolean(areaSetting));
+        }
+      );
+      this.settingsSignals.push(areaId);
+      const softFillId = this.gsettings.connect(
+        `changed::${softFillSetting}`,
+        (settings) => {
+          this.historyChart?.setAreaSoftFill(
+            settings.get_boolean(softFillSetting)
+          );
+        }
+      );
+      this.settingsSignals.push(softFillId);
     }
 
     protected formatChartLimit(summaryInterval: number) {
