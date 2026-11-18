@@ -23,6 +23,25 @@ export enum DisplayType {
   Both,
 }
 
+export const MonitorKeys = ['cpu', 'mem', 'disk', 'net', 'gpu'];
+
+// Drop unknown/duplicate entries and append any monitors missing from the
+// saved order, so every monitor always has exactly one position.
+export function normalizeMonitorOrder(order: string[]): string[] {
+  const result = new Array<string>();
+  for (const key of order) {
+    if (MonitorKeys.includes(key) && !result.includes(key)) {
+      result.push(key);
+    }
+  }
+  for (const key of MonitorKeys) {
+    if (!result.includes(key)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
 const ONE_MB_IN_B = 1000000;
 const TEN_MB_IN_B = 10000000;
 export const ONE_GB_IN_B = 1000000000;

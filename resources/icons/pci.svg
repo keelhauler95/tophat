@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:cc="http://creativecommons.org/ns#" viewBox="0 0 16 16">
+  <path d="M 2 3 L 13 3 C 14.1045694 3, 15 3.89543056, 15 5 L 15 11 C 15 12.1045694, 14.1045694 13, 13 13 L 12 13 L 12 15 L 5 15 L 5 13 L 2 13 M 9.99999997e-07 1 C 1.10457027 1.00000024, 2.00000024 1.8954308, 2 3 L 2 15.999999" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="butt" stroke-linejoin="round"/>
+  <path d="M 10.5 6.52252913 L 10.5 5 M 8.50000095 6.51471901 L 8.50000095 5 M 6.50000095 6.51471901 L 6.50000095 5.0083065 M 5.94924212 6.50538254 L 11.0408258 6.50538254 C 11.2946653 6.50538254, 11.4990187 6.70973635, 11.4990187 6.96357489 L 11.4990187 8.02708912 C 11.4990187 8.28092766, 11.2946653 8.48528099, 11.0408258 8.48528099 L 5.94924212 8.48528099 C 5.69540358 8.48528099, 5.49104977 8.28092766, 5.49104977 8.02708912 L 5.49104977 6.96357489 C 5.49104977 6.70973635, 5.69540358 6.50538254, 5.94924212 6.50538254 Z M 10.5 10.0078096 L 10.5 8.48528099 M 8.50000095 10 L 8.50000095 8.48528099 M 6.50000095 10 L 6.50000095 8.49358749 M 9.50000095 15 L 9.50000095 11.9921904 M 7.50000095 15 L 7.50000095 11.9921904" fill="none" stroke="#fff" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round"/>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <cc:license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/"/>
+        <dc:creator>Jakub Steiner</dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
