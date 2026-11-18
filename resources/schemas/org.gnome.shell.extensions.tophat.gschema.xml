@@ -20,6 +20,12 @@
     <value value="0" nick="slow"/>
     <value value="1" nick="medium"/>
     <value value="2" nick="fast"/>
+    <value value="3" nick="faster"/>
+    <value value="4" nick="fastest"/>
+  </enum>
+  <enum id="org.gnome.shell.extensions.tophat.monitor-app">
+    <value value="0" nick="system-monitor"/>
+    <value value="1" nick="resources"/>
   </enum>
   <schema id="org.gnome.shell.extensions.tophat" path="/org/gnome/shell/extensions/tophat/">
     <!-- See also: https://docs.gtk.org/glib/gvariant-format-strings.html -->
