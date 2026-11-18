@@ -15,17 +15,40 @@
 // You should have received a copy of the GNU General Public License
 // along with TopHat. If not, see <https://www.gnu.org/licenses/>.
 
+import Cairo from 'cairo';
 import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 
 import { gettext as _ } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { adjustAnimationTime } from 'resource:///org/gnome/shell/misc/animationUtils.js';
 
 import { IActivity, IHistory, MaxHistoryLen } from './vitals.js';
+import {
+  AnimationDuration,
+  AnimationEasing,
+  paintAnchoredFill,
+  SampleCadence,
+  parseColor,
+  traceRoundedRect,
+} from './meter.js';
 
 export enum HistoryStyle {
   SINGLE,
   DUAL,
+}
+
+const LineWidth = 1; // in logical pixels
+const BarGap = 1; // in logical pixels
+const BarMinHeight = 2; // in logical pixels
+
+// One chart's worth of samples, oldest first, as fractions of the full height.
+// `prevOldest` is the sample that just scrolled off the left edge, which is
+// still partly visible while the chart slides.
+interface Series {
+  values: number[];
+  prevOldest: number;
 }
 
 export const HistoryChart = GObject.registerClass(
@@ -35,13 +58,18 @@ export const HistoryChart = GObject.registerClass(
     private lm;
     private chart: St.BoxLayout;
     private chartAlt: St.BoxLayout | null;
-    private bars: Array<St.Widget>;
-    private barsAlt: Array<St.Widget> | null;
-    private priorActivity: IHistory[] | null;
-    private priorActivityAlt: IActivity[] | null;
-    private priorMax = 0;
-    private chartHeight = 0;
-    private chartHeightAlt = 0;
+    private areaChart: St.DrawingArea;
+    private areaChartAlt: St.DrawingArea | null;
+    private areaMode = false;
+    private areaSoftFill = true;
+    private series: Series = { values: [], prevOldest: 0 };
+    private seriesAlt: Series = { values: [], prevOldest: 0 };
+    private areaColor: Cogl.Color | null = null;
+    private updateInterval = AnimationDuration;
+    private cadence = new SampleCadence();
+    // How far the chart has slid toward its newest sample, from 0 to 1
+    private scroll = 1;
+    private scrollTimeline: Clutter.Timeline | null = null;
     private yLabelTop;
     private yLabelMiddle;
     private yLabelBottom;
@@ -49,93 +77,72 @@ export const HistoryChart = GObject.registerClass(
     private xLabelThen;
 
     constructor(style = HistoryStyle.SINGLE) {
-      super();
+      super({ x_expand: true });
       this.chartStyle = style;
       this.grid = new St.Widget({
+        x_expand: true,
         layout_manager: new Clutter.GridLayout({
           orientation: Clutter.Orientation.VERTICAL,
         }),
       });
       this.add_child(this.grid);
       this.lm = this.grid.layout_manager as Clutter.GridLayout;
-      this.bars = new Array<St.Widget>(MaxHistoryLen);
-      for (let i = 0; i < MaxHistoryLen; i++) {
-        this.bars[i] = new St.Widget({
-          name: 'HistoryBar',
-          x_expand: true,
-          y_expand: false,
-          y_align: Clutter.ActorAlign.END,
-          style_class: 'tophat-chart-bar',
-          height: 0,
-        });
-      }
-      this.chart = new St.BoxLayout({ style_class: 'tophat-chart' });
-      this.chart.set_clip_to_allocation(true);
+      this.chart = new St.BoxLayout({
+        style_class: 'tophat-chart',
+        x_expand: true,
+      });
+      this.areaChart = new St.DrawingArea({
+        name: 'HistoryAreaChart',
+        x_expand: true,
+        y_expand: true,
+      });
+      this.areaChart.connect('repaint', (area: St.DrawingArea) => {
+        this.repaint(area, this.series, false);
+      });
       if (this.chartStyle === HistoryStyle.DUAL) {
-        this.barsAlt = new Array<St.Widget>(MaxHistoryLen);
-        for (let i = 0; i < MaxHistoryLen; i++) {
-          this.barsAlt[i] = new St.Widget({
-            name: 'HistoryBarAlt',
-            x_expand: true,
-            y_expand: false,
-            y_align: Clutter.ActorAlign.START,
-            style_class: 'tophat-chart-bar tophat-chart-bar-alt',
-            height: 0,
-          });
-        }
-        const chartAlt = new St.BoxLayout({
+        this.chartAlt = new St.BoxLayout({
           style_class: 'tophat-chart tophat-chart-stacked-bottom',
+          x_expand: true,
         });
-        chartAlt.set_clip_to_allocation(true);
-        this.chartAlt = chartAlt;
+        this.areaChartAlt = new St.DrawingArea({
+          name: 'HistoryAreaChartAlt',
+          x_expand: true,
+          y_expand: true,
+        });
+        this.areaChartAlt.connect('repaint', (area: St.DrawingArea) => {
+          this.repaint(area, this.seriesAlt, true);
+        });
       } else {
-        this.barsAlt = null;
         this.chartAlt = null;
+        this.areaChartAlt = null;
       }
 
-      this.priorActivity = null;
-      this.priorActivityAlt = null;
       this.yLabelTop = new St.Label();
       this.yLabelMiddle = new St.Label();
       this.yLabelBottom = new St.Label();
       this.xLabelNow = new St.Label();
       this.xLabelThen = new St.Label();
 
-      // When the menus are closed, the chart's height changes
-      // but no notify::height signal is emitted. We cache this
-      // value so we always know what the actual, visible height
-      // of the chart will be.
-      // TODO(fflewddur): Investigate if I'm just holding this wrong
-      this.chart.connect('notify::height', (w) => {
-        this.chartHeight = w.height;
-        if (this.chartStyle === HistoryStyle.SINGLE && this.priorActivity) {
-          this.update(this.priorActivity);
-        } else if (this.priorActivityAlt && this.chartAlt) {
-          this.chartHeightAlt = this.chartAlt.height;
-          this.updateAlt(this.priorActivityAlt, this.priorMax);
-        }
-      });
-      if (this.chartAlt) {
-        this.chartAlt.connect('notify::height', (w) => {
-          this.chartHeightAlt = w.height;
-          if (!this.priorActivityAlt) {
-            return;
-          }
-          this.updateAlt(this.priorActivityAlt, this.priorMax);
-        });
-      }
-
       this.build();
     }
 
-    public refresh() {
-      if (this.chartStyle === HistoryStyle.SINGLE && this.priorActivity) {
-        this.update(this.priorActivity);
-      } else if (
-        this.chartStyle === HistoryStyle.DUAL &&
-        this.priorActivityAlt
-      ) {
-        this.updateAlt(this.priorActivityAlt, this.priorMax);
+    public setAreaMode(enabled: boolean) {
+      if (enabled === this.areaMode) {
+        return;
+      }
+      this.areaMode = enabled;
+      this.queueRepaint();
+    }
+
+    public setAreaSoftFill(enabled: boolean) {
+      this.areaSoftFill = enabled;
+      this.queueRepaint();
+    }
+
+    // The chart slides by one sample over this many milliseconds
+    public setUpdateInterval(interval: number) {
+      if (Number.isFinite(interval) && interval > 0) {
+        this.updateInterval = interval;
       }
     }
 
@@ -156,100 +163,255 @@ export const HistoryChart = GObject.registerClass(
     }
 
     public update(usage: IHistory[]) {
-      for (let i = 0; i < this.bars.length; i++) {
-        const u = usage[usage.length - i - 1].val();
-        if (u < 0) {
-          console.warn(`update(): usage[${usage.length - i - 1}] < 0: ${u}`);
-        } else if (u > 1) {
-          console.warn(`update(): usage[${usage.length - i - 1} > 1: ${u}]`);
-        }
-        const h = this.chartHeight * u;
-        if (Number.isNaN(h)) {
-          console.warn(`update(): height is NaN`);
-        }
-        this.bars[i].height = h;
+      const values = this.samples(
+        usage.slice(-MaxHistoryLen).map((u) => u.val())
+      );
+      if (values) {
+        this.push(values, null);
       }
-      const priorActivity = new Array<IHistory>();
-      for (const u of usage) {
-        priorActivity.push(u.copy());
-      }
-      this.priorActivity = priorActivity;
     }
 
     public updateAlt(usage: IActivity[], max: number) {
-      if (!this.chartAlt || !this.barsAlt) {
-        console.warn('[TopHat] chartAlt is null');
+      const recent = usage.slice(-MaxHistoryLen);
+      const values = this.samples(
+        recent.map((u) => (max ? u.valAlt() / max : 0))
+      );
+      const valuesAlt = this.samples(
+        recent.map((u) => (max ? u.val() / max : 0))
+      );
+      if (values && valuesAlt) {
+        this.push(values, valuesAlt);
+      }
+    }
+
+    // History is stored newest first; the chart is drawn oldest first
+    private samples(newestFirst: number[]): number[] | null {
+      if (newestFirst.some((v) => !Number.isFinite(v))) {
+        console.warn('[TopHat] history contains a non-finite value');
+        return null;
+      }
+      return newestFirst.reverse().map((v) => Math.min(Math.max(v, 0), 1));
+    }
+
+    private push(values: number[], valuesAlt: number[] | null) {
+      this.series = {
+        values,
+        prevOldest: this.series.values[0] ?? values[0],
+      };
+      if (valuesAlt) {
+        this.seriesAlt = {
+          values: valuesAlt,
+          prevOldest: this.seriesAlt.values[0] ?? valuesAlt[0],
+        };
+      }
+      this.startScroll();
+    }
+
+    // Slide the chart left by one sample, so it flows rather than steps
+    private startScroll() {
+      this.stopScroll();
+      const duration = adjustAnimationTime(
+        this.cadence.next(this.updateInterval)
+      );
+      if (duration <= 0 || !this.mapped) {
+        this.scroll = 1;
+        this.queueRepaint();
         return;
       }
-      for (let i = 0; i < this.bars.length; i++) {
-        let u = usage[usage.length - i - 1].val() / max;
-        let uAlt = usage[usage.length - i - 1].valAlt() / max;
-        if (u < 0) {
-          console.warn(`updateAlt(): usage[${usage.length - i - 1}] < 0: ${u}`);
-          u = 0;
-        } else if (u > 1) {
-          console.warn(`updateAlt(): usage[${usage.length - i - 1} > 1: ${u}]`);
-          u = 1;
-        }
-        if (uAlt < 0) {
-          console.warn(
-            `updateAlt(): usageAlt[${usage.length - i - 1}] < 0: ${uAlt}`
-          );
-          uAlt = 0;
-        } else if (uAlt > 1) {
-          console.warn(
-            `updateAlt(): usageAlt[${usage.length - i - 1} > 1: ${uAlt}]`
-          );
-          uAlt = 1;
-        }
-        let height = 0;
-        let heightAlt = 0;
-        if (max) {
-          height = this.chartHeight * uAlt;
-          heightAlt = this.chartHeightAlt * u;
-        }
-        if (Number.isNaN(height)) {
-          console.warn(`update(): height is NaN`);
-        }
-        if (Number.isNaN(heightAlt)) {
-          console.warn(`update(): heightAlt is NaN`);
-        }
-        this.bars[i].height = height;
-        this.barsAlt[i].height = heightAlt;
-      }
-      const priorActivityAlt = new Array<IActivity>();
-      for (const u of usage) {
-        priorActivityAlt.push(u.copy());
-      }
-      this.priorActivityAlt = priorActivityAlt;
-      this.priorMax = max;
+      this.scroll = 0;
+      const timeline = new Clutter.Timeline({ actor: this, duration });
+      this.scrollTimeline = timeline;
+      timeline.set_progress_mode(AnimationEasing);
+      timeline.connect('new-frame', () => {
+        this.scroll = timeline.get_progress();
+        this.queueRepaint();
+      });
+      timeline.connect('completed', () => {
+        this.scroll = 1;
+        this.scrollTimeline = null;
+        this.queueRepaint();
+      });
+      timeline.start();
+      this.queueRepaint();
+    }
+
+    private stopScroll() {
+      this.scrollTimeline?.stop();
+      this.scrollTimeline = null;
+    }
+
+    private queueRepaint() {
+      this.areaChart.queue_repaint();
+      this.areaChartAlt?.queue_repaint();
     }
 
     public setColor(color: string) {
-      for (const bar of this.bars) {
-        bar.set_style(`background-color:${color}`);
+      this.areaColor = parseColor(color);
+      if (!this.areaColor) {
+        console.warn(`[TopHat] Error parsing ${color} to Cogl.Color`);
       }
-      if (this.barsAlt) {
-        for (const barAlt of this.barsAlt) {
-          barAlt.set_style(`background-color:${color}`);
+      this.queueRepaint();
+    }
+
+    private repaint(area: St.DrawingArea, series: Series, inverted: boolean) {
+      const cr = area.get_context();
+      const [width, height] = area.get_surface_size();
+      const color = this.areaColor;
+      if (!color || series.values.length === 0 || width <= 0 || height <= 0) {
+        cr.$dispose();
+        return;
+      }
+      const scale = St.ThemeContext.get_for_stage(
+        global.get_stage()
+      ).get_scale_factor();
+
+      // The plot fills its container edge to edge, following its rounded corners
+      const container = area.get_parent() as St.Widget | null;
+      const radius = Math.min(
+        container?.get_theme_node().get_border_radius(St.Corner.TOPLEFT) ?? 0,
+        width / 2,
+        height / 2
+      );
+      if (radius > 0) {
+        traceRoundedRect(
+          cr,
+          0,
+          0,
+          width,
+          height,
+          radius,
+          radius,
+          radius,
+          radius
+        );
+        cr.clip();
+      }
+      if (inverted) {
+        // Draw as usual, then flip so the plot hangs from the top
+        cr.translate(0, height);
+        cr.scale(1, -1);
+      }
+      cr.setSourceRGBA(color.red / 255, color.green / 255, color.blue / 255, 1);
+      if (this.areaMode) {
+        this.drawArea(cr, width, height, series, scale);
+      } else {
+        this.drawBars(cr, width, height, series, scale);
+      }
+      cr.$dispose();
+    }
+
+    private drawBars(
+      cr: Cairo.Context,
+      width: number,
+      height: number,
+      series: Series,
+      scale: number
+    ) {
+      const { values, prevOldest } = series;
+      const gap = BarGap * scale;
+      const pitch = (width + gap) / values.length;
+      const barWidth = pitch - gap;
+      const offset = (1 - this.scroll) * pitch;
+      const all = [prevOldest, ...values];
+      for (let i = 0; i < all.length; i++) {
+        const x = (i - 1) * pitch + offset;
+        if (x + barWidth < 0 || x > width) {
+          continue;
         }
+        const barHeight = Math.max(all[i] * height, BarMinHeight * scale);
+        paintAnchoredFill(
+          cr,
+          height,
+          x,
+          barWidth,
+          barHeight,
+          0,
+          barWidth / 2,
+          false,
+          false
+        );
       }
+    }
+
+    private drawArea(
+      cr: Cairo.Context,
+      width: number,
+      height: number,
+      series: Series,
+      scale: number
+    ) {
+      const { values, prevOldest } = series;
+      const lineWidth = LineWidth * scale;
+      const points =
+        values.length === 1 ? [values[0], values[0]] : [prevOldest, ...values];
+      const step = width / Math.max(values.length - 1, 1);
+      const offset = values.length === 1 ? 0 : (1 - this.scroll) * step;
+      const first = values.length === 1 ? 0 : -1;
+      const xOf = (i: number) => (i + first) * step + offset;
+      const yOf = (v: number) =>
+        height - lineWidth / 2 - v * (height - lineWidth);
+      // Monotone cubic tangents keep the curve from overshooting any sample
+      const slopes = points.slice(1).map((v, i) => v - points[i]);
+      const tangents = points.map((_, i) => {
+        if (i === 0) {
+          return slopes[0];
+        }
+        if (i === points.length - 1) {
+          return slopes[i - 1];
+        }
+        const left = slopes[i - 1];
+        const right = slopes[i];
+        return left * right <= 0 ? 0 : (2 * left * right) / (left + right);
+      });
+      const tracePoints = () => {
+        for (let i = 1; i < points.length; i++) {
+          cr.curveTo(
+            xOf(i - 1) + step / 3,
+            yOf(points[i - 1] + tangents[i - 1] / 3),
+            xOf(i) - step / 3,
+            yOf(points[i] - tangents[i] / 3),
+            xOf(i),
+            yOf(points[i])
+          );
+        }
+      };
+      const color = this.areaColor;
+      if (!color) {
+        return;
+      }
+      const r = color.red / 255;
+      const g = color.green / 255;
+      const b = color.blue / 255;
+
+      cr.moveTo(xOf(0), height);
+      cr.lineTo(xOf(0), yOf(points[0]));
+      tracePoints();
+      cr.lineTo(xOf(points.length - 1), height);
+      cr.closePath();
+      cr.setSourceRGBA(r, g, b, this.areaSoftFill ? 0.35 : 1);
+      cr.fill();
+
+      cr.moveTo(xOf(0), yOf(points[0]));
+      tracePoints();
+      cr.setLineJoin(Cairo.LineJoin.ROUND);
+      cr.setLineCap(Cairo.LineCap.ROUND);
+      cr.setLineWidth(lineWidth);
+      cr.setSourceRGBA(r, g, b, 1);
+      cr.stroke();
     }
 
     private build() {
       let chartRowSpan = 2;
-      if (this.barsAlt) {
+      if (this.chartAlt) {
         chartRowSpan = 1;
       }
 
       this.lm.attach(this.chart, 0, 0, 2, chartRowSpan);
-      for (const bar of this.bars) {
-        this.chart.add_child(bar);
-      }
-      if (this.barsAlt && this.chartAlt) {
+      this.chart.add_child(this.areaChart);
+      if (this.chartAlt) {
         this.lm.attach(this.chartAlt, 0, 1, 2, chartRowSpan);
-        for (const bar of this.barsAlt) {
-          this.chartAlt.add_child(bar);
+        if (this.areaChartAlt) {
+          this.chartAlt.add_child(this.areaChartAlt);
         }
         this.chart.add_style_class_name('tophat-chart-stacked-top');
       }
@@ -290,6 +452,7 @@ export const HistoryChart = GObject.registerClass(
     }
 
     public override destroy() {
+      this.stopScroll();
       this.grid.destroy();
       super.destroy();
     }

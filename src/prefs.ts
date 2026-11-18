@@ -199,7 +199,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
   private buildCpuPage() {
     const page = new Adw.PreferencesPage({
       title: _('CPU'),
-      iconName: 'cpu-icon-symbolic',
+      iconName: 'tophat-processor-symbolic',
     });
 
     const group = new Adw.PreferencesGroup({ title: _('CPU') });
@@ -213,18 +213,105 @@ export default class TopHatPrefs extends ExtensionPreferences {
     choices.append(_('Usage meter'));
     choices.append(_('Numeric value'));
     choices.append(_('Both meter and value'));
-    this.addComboRow(_('Show as'), choices, 'cpu-display', group);
+    const displayRow = this.addComboRow(
+      _('Show as'),
+      choices,
+      'cpu-display',
+      group
+    );
+    this.setRowVisibleWhenAll(displayRow, ['show-cpu']);
+    const showValueRow = this.addActionRow(
+      _('Show usage value in panel'),
+      'cpu-show-value',
+      group
+    );
+    this.setRowVisibleWhen(showValueRow, ['show-cpu', 'cpu-display'], () => {
+      const settings = this.getSettings();
+      return (
+        settings.get_boolean('show-cpu') &&
+        settings.get_enum('cpu-display') !== 0
+      );
+    });
+
+    const meterVisible = () =>
+      this.getSettings().get_boolean('show-cpu') &&
+      this.getSettings().get_enum('cpu-display') !== 1;
+
+    // Line chart instead of bars
+    const lineChartRow = this.addActionRow(
+      _('Show meter as a line chart'),
+      'cpu-line-chart',
+      group
+    );
+    this.setRowVisibleWhen(
+      lineChartRow,
+      ['show-cpu', 'cpu-display'],
+      meterVisible
+    );
+
+    const separatorsRow = this.addActionRow(
+      _('Show separators between cores'),
+      'cpu-line-separators',
+      group
+    );
+    this.setRowVisibleWhen(
+      separatorsRow,
+      ['show-cpu', 'cpu-display', 'cpu-line-chart'],
+      () => meterVisible() && this.getSettings().get_boolean('cpu-line-chart')
+    );
+    const lineSoftFillRow = this.addActionRow(
+      _('Use a softer area fill'),
+      'cpu-line-soft-fill',
+      group
+    );
+    this.setRowVisibleWhen(
+      lineSoftFillRow,
+      ['show-cpu', 'cpu-display', 'cpu-line-chart'],
+      () => meterVisible() && this.getSettings().get_boolean('cpu-line-chart')
+    );
+
+    this.addConditionalActionRow(
+      _('Show CPU history as an area chart'),
+      'cpu-history-area',
+      ['show-cpu'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'cpu-history-soft-fill',
+      ['show-cpu', 'cpu-history-area'],
+      group
+    );
 
     // Show each core
-    this.addActionRow(_('Show each core'), 'cpu-show-cores', group);
+    const showCoresRow = this.addActionRow(
+      _('Show each core'),
+      'cpu-show-cores',
+      group
+    );
+    this.setRowVisibleWhen(
+      showCoresRow,
+      ['show-cpu', 'cpu-display'],
+      meterVisible
+    );
 
     // Sort cores by usage
-    this.addActionRow(_('Sort cores by usage'), 'cpu-sort-cores', group);
+    const sortCoresRow = this.addActionRow(
+      _('Sort cores by usage'),
+      'cpu-sort-cores',
+      group
+    );
+    this.setRowVisibleWhen(
+      sortCoresRow,
+      ['show-cpu', 'cpu-display'],
+      meterVisible
+    );
 
     // Normalize process CPU usage
-    this.addActionRow(
+    this.addConditionalActionRow(
       _('Normalize per-process CPU usage by CPU cores'),
       'cpu-normalize-proc-use',
+      ['show-cpu'],
       group
     );
 
@@ -246,6 +333,18 @@ export default class TopHatPrefs extends ExtensionPreferences {
       ['show-gpu'],
       group
     );
+    this.addConditionalActionRow(
+      _('Show GPU history as an area chart'),
+      'gpu-history-area',
+      ['show-gpu'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'gpu-history-soft-fill',
+      ['show-gpu', 'gpu-history-area'],
+      group
+    );
     return page;
   }
 
@@ -265,13 +364,25 @@ export default class TopHatPrefs extends ExtensionPreferences {
       ['show-npu'],
       group
     );
+    this.addConditionalActionRow(
+      _('Show NPU history as an area chart'),
+      'npu-history-area',
+      ['show-npu'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'npu-history-soft-fill',
+      ['show-npu', 'npu-history-area'],
+      group
+    );
     return page;
   }
 
   private buildMemPage() {
     const page = new Adw.PreferencesPage({
       title: _('Memory'),
-      iconName: 'mem-icon-symbolic',
+      iconName: 'tophat-memory-symbolic',
     });
 
     const group = new Adw.PreferencesGroup({ title: _('Memory') });
@@ -285,10 +396,52 @@ export default class TopHatPrefs extends ExtensionPreferences {
     choices.append(_('Usage meter'));
     choices.append(_('Numeric value'));
     choices.append(_('Both meter and value'));
-    this.addComboRow(_('Show as'), choices, 'mem-display', group);
+    const displayRow = this.addComboRow(
+      _('Show as'),
+      choices,
+      'mem-display',
+      group
+    );
+    this.setRowVisibleWhenAll(displayRow, ['show-mem']);
+    const showValueRow = this.addActionRow(
+      _('Show usage value in panel'),
+      'mem-show-value',
+      group
+    );
+    this.setRowVisibleWhen(showValueRow, ['show-mem', 'mem-display'], () => {
+      const settings = this.getSettings();
+      return (
+        settings.get_boolean('show-mem') &&
+        settings.get_enum('mem-display') !== 0
+      );
+    });
 
     // Absolute units
-    this.addActionRow(_('Show usage in GB'), 'mem-abs-units', group);
+    const absUnitsRow = this.addActionRow(
+      _('Show usage in GB'),
+      'mem-abs-units',
+      group
+    );
+    this.setRowVisibleWhen(absUnitsRow, ['show-mem', 'mem-display'], () => {
+      const settings = this.getSettings();
+      return (
+        settings.get_boolean('show-mem') &&
+        settings.get_enum('mem-display') !== 0
+      );
+    });
+
+    this.addConditionalActionRow(
+      _('Show memory history as an area chart'),
+      'mem-history-area',
+      ['show-mem'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'mem-history-soft-fill',
+      ['show-mem', 'mem-history-area'],
+      group
+    );
 
     return page;
   }
@@ -296,7 +449,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
   private buildDiskPage() {
     const page = new Adw.PreferencesPage({
       title: _('Disk'),
-      iconName: 'disk-icon-symbolic',
+      iconName: 'tophat-drive-harddisk-symbolic',
     });
 
     let group = new Adw.PreferencesGroup({ title: _('Disk activity') });
@@ -304,6 +457,24 @@ export default class TopHatPrefs extends ExtensionPreferences {
 
     // Enable
     this.addActionRow(_('Show the disk activity monitor'), 'show-disk', group);
+    this.addConditionalActionRow(
+      _('Show read/write speeds in panel'),
+      'disk-show-values',
+      ['show-disk'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Show disk activity history as area charts'),
+      'disk-history-area',
+      ['show-disk'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'disk-history-soft-fill',
+      ['show-disk', 'disk-history-area'],
+      group
+    );
 
     group = new Adw.PreferencesGroup({ title: _('Filesystem usage') });
     page.add(group);
@@ -316,7 +487,24 @@ export default class TopHatPrefs extends ExtensionPreferences {
     choices.append(_('Usage meter'));
     choices.append(_('Numeric value'));
     choices.append(_('Both meter and value'));
-    this.addComboRow(_('Show as'), choices, 'fs-display', group);
+    const displayRow = this.addComboRow(
+      _('Show as'),
+      choices,
+      'fs-display',
+      group
+    );
+    this.setRowVisibleWhenAll(displayRow, ['show-fs']);
+    const showValueRow = this.addActionRow(
+      _('Show usage value in panel'),
+      'fs-show-value',
+      group
+    );
+    this.setRowVisibleWhen(showValueRow, ['show-fs', 'fs-display'], () => {
+      const settings = this.getSettings();
+      return (
+        settings.get_boolean('show-fs') && settings.get_enum('fs-display') !== 0
+      );
+    });
 
     // Filesystem mount to monitor in the topbar
     const fsMountChoices = new Gtk.StringList();
@@ -327,12 +515,14 @@ export default class TopHatPrefs extends ExtensionPreferences {
       group,
       false
     );
+    this.setRowVisibleWhenAll(monitorMountRow, ['show-fs']);
 
     // Filesystem mounts to monitor in the menu
     const row = new Adw.ExpanderRow({
       title: _('Filesystems to show in menu'),
     });
     group.add(row);
+    this.setRowVisibleWhenAll(row, ['show-fs']);
     // Find available filesystems and add them to our widgets
     readFileSystems()
       .then((filesystems) => {
@@ -444,6 +634,19 @@ export default class TopHatPrefs extends ExtensionPreferences {
     );
     group.add(maxSpeedRow);
     this.setRowVisibleWhenAll(maxSpeedRow, ['show-net', 'net-show-bars']);
+
+    this.addConditionalActionRow(
+      _('Show network history as area charts'),
+      'net-history-area',
+      ['show-net'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Use a softer area fill'),
+      'net-history-soft-fill',
+      ['show-net', 'net-history-area'],
+      group
+    );
 
     // Select network device
     const netDevChoices = new Gtk.StringList();
@@ -568,9 +771,9 @@ export default class TopHatPrefs extends ExtensionPreferences {
     });
 
     if (control) {
-      row.set_sensitive(!control.active);
+      row.visible = !control.active;
       control.connect('notify::active', (w: Gtk.Switch) => {
-        row.set_sensitive(!w.active);
+        row.visible = !w.active;
       });
     }
 

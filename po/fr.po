@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TopHat\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-19 18:50-0700\n"
+"POT-Creation-Date: 2026-11-16 23:36+0100\n"
 "PO-Revision-Date: 2022-09-20 13:50+0200\n"
 "Last-Translator: Axel Haustant <noirbizarre@gmail.com>\n"
 "Language-Team: French\n"
@@ -18,102 +18,445 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.1\n"
 
-#: prefs.js:40
-msgid "Show CPU monitor"
-msgstr "Afficher le moniteur CPU"
+#: src/accelerator.ts:281
+#, fuzzy
+msgid "GPU activity"
+msgstr "Utilisation du réseau"
 
-#: prefs.js:41
-msgid "Show memory monitor"
-msgstr "Afficher le moniteur mémoire"
+#: src/accelerator.ts:281
+#, fuzzy
+msgid "NPU activity"
+msgstr "Utilisation du réseau"
 
-#: prefs.js:42
-msgid "Show network monitor"
-msgstr "Afficher le moniteur réseau"
+#: src/accelerator.ts:285
+msgid "Utilization:"
+msgstr ""
 
-#: prefs.js:48 prefs.js:123 prefs.js:202
-msgid "Left edge"
-msgstr "Côté gauche"
+#: src/accelerator.ts:288
+#, fuzzy
+msgid "Memory:"
+msgstr "Utilisation de la mémoire"
 
-#: prefs.js:49 prefs.js:124 prefs.js:203
-msgid "Left"
-msgstr "Gauche"
+#: src/accelerator.ts:291 src/cpu.ts:199
+msgid "Temperature:"
+msgstr ""
 
-#: prefs.js:50 prefs.js:125 prefs.js:204
-msgid "Center"
-msgstr "Centre"
-
-#: prefs.js:51 prefs.js:126 prefs.js:205
-msgid "Right"
-msgstr "Droite"
-
-#: prefs.js:52 prefs.js:127 prefs.js:206
-msgid "Right edge"
-msgstr "Côté droit"
-
-#: prefs.js:53 prefs.js:128 prefs.js:207
-msgid "Position in panel"
-msgstr "Position dans le panneau"
-
-#: prefs.js:55 prefs.js:129 prefs.js:208
-msgid "Show icons beside monitors"
-msgstr "Afficher les icônes à côté des monitors"
-
-#: prefs.js:113 prefs.js:192
-msgid "Show the CPU monitor"
-msgstr "Afficher le moniteur CPU"
-
-#: prefs.js:114 prefs.js:193
-msgid "Show the memory monitor"
-msgstr "Afficher le moniteur mémoire"
-
-#: prefs.js:115 prefs.js:194
-msgid "Show the network monitor"
-msgstr "Afficher le moniteur réseau"
-
-#: lib/cpu.js:145
+#: src/cpu.ts:165
 msgid "Processor usage"
 msgstr "Utilisation du processeur"
 
-#: lib/cpu.js:149
-msgid "Total CPU:"
-msgstr "CPU Total:"
+#: src/cpu.ts:171
+#, fuzzy
+msgid "Processor utilization:"
+msgstr "Utilisation du processeur"
 
-#: lib/cpu.js:161 lib/mem.js:137 lib/net.js:136
-msgid "2 mins ago"
-msgstr "Il y a 2 minutes"
+#: src/cpu.ts:189
+msgid "Frequency:"
+msgstr ""
 
-#: lib/cpu.js:163 lib/mem.js:139 lib/net.js:138
-msgid "now"
-msgstr "maintenant"
-
-#: lib/cpu.js:167 lib/mem.js:143
+#: src/cpu.ts:215 src/disk.ts:231 src/mem.ts:168
 msgid "Top processes"
 msgstr "Principaux processus"
 
-#: lib/cpu.js:186 lib/mem.js:162 lib/net.js:150
-msgid "System Monitor"
-msgstr "Moniteur Système"
+#: src/cpu.ts:233
+msgid "System uptime"
+msgstr ""
 
-#: lib/mem.js:115
+#: src/cpu.ts:342
+#, javascript-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/cpu.ts:345
+#, javascript-format
+msgid "%d hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/cpu.ts:347
+#, javascript-format
+msgid "%d minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/disk.ts:181 src/prefs.ts:455
+msgid "Disk activity"
+msgstr ""
+
+#: src/disk.ts:187
+#, fuzzy
+msgid "Reading:"
+msgstr "Envoi:"
+
+#: src/disk.ts:196
+msgid "Writing:"
+msgstr ""
+
+#: src/disk.ts:207
+#, fuzzy
+msgid "Total read:"
+msgstr "CPU Total:"
+
+#: src/disk.ts:216
+msgid "Total written:"
+msgstr ""
+
+#: src/disk.ts:239
+msgid "Writing"
+msgstr ""
+
+#: src/disk.ts:244
+#, fuzzy
+msgid "Reading"
+msgstr "Envoi:"
+
+#: src/disk.ts:262 src/prefs.ts:479
+msgid "Filesystem usage"
+msgstr ""
+
+#: src/history.ts:442
+msgid "now"
+msgstr "maintenant"
+
+#: src/mem.ts:126
 msgid "Memory usage"
 msgstr "Utilisation de la mémoire"
 
-#: lib/mem.js:119
+#: src/mem.ts:132
 msgid "RAM used:"
 msgstr "RAM utilisée:"
 
-#: lib/mem.js:125
+#: src/mem.ts:147
 msgid "Swap used:"
 msgstr "Swap utilisé:"
 
-#: lib/net.js:114
-msgid "Network usage"
+#: src/monitor.ts:270
+msgid "Unable to open the selected monitor application"
+msgstr ""
+
+#: src/monitor.ts:272
+msgid "Resources is not installed."
+msgstr ""
+
+#: src/monitor.ts:273
+msgid "GNOME System Monitor is not installed."
+msgstr ""
+
+#: src/monitor.ts:389
+#, fuzzy, javascript-format
+msgid "%d min ago"
+msgid_plural "%d mins ago"
+msgstr[0] "Il y a 2 minutes"
+msgstr[1] "Il y a 2 minutes"
+
+#: src/net.ts:360
+#, fuzzy
+msgid "Network activity"
 msgstr "Utilisation du réseau"
 
-#: lib/net.js:118
+#: src/net.ts:366
 msgid "Sending:"
 msgstr "Envoi:"
 
-#: lib/net.js:124
+#: src/net.ts:375
 msgid "Receiving:"
 msgstr "Reception:"
+
+#: src/net.ts:386
+#, fuzzy
+msgid "Total sent:"
+msgstr "CPU Total:"
+
+#: src/net.ts:395
+msgid "Total received:"
+msgstr ""
+
+#: src/prefs.ts:67 src/prefs.ts:71
+msgid "General"
+msgstr ""
+
+#: src/prefs.ts:76
+msgid "Left edge"
+msgstr "Côté gauche"
+
+#: src/prefs.ts:77
+msgid "Left"
+msgstr "Gauche"
+
+#: src/prefs.ts:78
+msgid "Center"
+msgstr "Centre"
+
+#: src/prefs.ts:79
+msgid "Right"
+msgstr "Droite"
+
+#: src/prefs.ts:80
+msgid "Right edge"
+msgstr "Côté droit"
+
+#: src/prefs.ts:82
+msgid "Position in panel"
+msgstr "Position dans le panneau"
+
+#: src/prefs.ts:90
+msgid "Slow"
+msgstr ""
+
+#: src/prefs.ts:91
+msgid "Medium"
+msgstr ""
+
+#: src/prefs.ts:92
+msgid "Fast"
+msgstr ""
+
+#: src/prefs.ts:93
+msgid "Faster"
+msgstr ""
+
+#: src/prefs.ts:94
+msgid "Fastest"
+msgstr ""
+
+#: src/prefs.ts:95
+msgid "Refresh speed"
+msgstr ""
+
+#: src/prefs.ts:98
+msgid "System Monitor"
+msgstr "Moniteur Système"
+
+#: src/prefs.ts:99
+msgid "Resources"
+msgstr ""
+
+#: src/prefs.ts:101
+msgid "Application opened by monitor buttons"
+msgstr ""
+
+#: src/prefs.ts:113
+msgid "Use system accent color"
+msgstr ""
+
+#: src/prefs.ts:119
+msgid "Meter color"
+msgstr ""
+
+#: src/prefs.ts:120
+msgid "Round meter bars"
+msgstr ""
+
+#: src/prefs.ts:123
+msgid "Show icons beside monitors"
+msgstr "Afficher les icônes à côté des monitors"
+
+#: src/prefs.ts:127
+msgid "Show action buttons in menus"
+msgstr ""
+
+#: src/prefs.ts:134
+msgid "Group top processes by command"
+msgstr ""
+
+#: src/prefs.ts:147
+msgid "Monitor order"
+msgstr ""
+
+#: src/prefs.ts:148
+msgid "Order of the monitors in the panel"
+msgstr ""
+
+#: src/prefs.ts:151 src/prefs.ts:201 src/prefs.ts:205
+msgid "CPU"
+msgstr ""
+
+#: src/prefs.ts:152 src/prefs.ts:384 src/prefs.ts:388
+#, fuzzy
+msgid "Memory"
+msgstr "Utilisation de la mémoire"
+
+#: src/prefs.ts:153 src/prefs.ts:451
+msgid "Disk"
+msgstr ""
+
+#: src/prefs.ts:154 src/prefs.ts:591 src/prefs.ts:595
+#, fuzzy
+msgid "Network"
+msgstr "Utilisation du réseau"
+
+#: src/prefs.ts:155 src/prefs.ts:323 src/prefs.ts:326
+msgid "GPU"
+msgstr ""
+
+#: src/prefs.ts:156 src/prefs.ts:353 src/prefs.ts:356
+msgid "NPU"
+msgstr ""
+
+#: src/prefs.ts:187
+msgid "Move up"
+msgstr ""
+
+#: src/prefs.ts:188
+msgid "Move down"
+msgstr ""
+
+#: src/prefs.ts:209
+msgid "Show the CPU monitor"
+msgstr "Afficher le moniteur CPU"
+
+#: src/prefs.ts:213 src/prefs.ts:396 src/prefs.ts:487
+msgid "Usage meter"
+msgstr ""
+
+#: src/prefs.ts:214 src/prefs.ts:397 src/prefs.ts:488
+msgid "Numeric value"
+msgstr ""
+
+#: src/prefs.ts:215 src/prefs.ts:398 src/prefs.ts:489
+msgid "Both meter and value"
+msgstr ""
+
+#: src/prefs.ts:217 src/prefs.ts:400 src/prefs.ts:491
+msgid "Show as"
+msgstr ""
+
+#: src/prefs.ts:224 src/prefs.ts:331 src/prefs.ts:362 src/prefs.ts:407
+#: src/prefs.ts:498
+msgid "Show usage value in panel"
+msgstr ""
+
+#: src/prefs.ts:242
+msgid "Show meter as a line chart"
+msgstr ""
+
+#: src/prefs.ts:253
+msgid "Show separators between cores"
+msgstr ""
+
+#: src/prefs.ts:263 src/prefs.ts:280 src/prefs.ts:343 src/prefs.ts:374
+#: src/prefs.ts:440 src/prefs.ts:473 src/prefs.ts:645
+msgid "Use a softer area fill"
+msgstr ""
+
+#: src/prefs.ts:274
+msgid "Show CPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:288
+msgid "Show each core"
+msgstr ""
+
+#: src/prefs.ts:300
+msgid "Sort cores by usage"
+msgstr ""
+
+#: src/prefs.ts:312
+msgid "Normalize per-process CPU usage by CPU cores"
+msgstr ""
+
+#: src/prefs.ts:329
+#, fuzzy
+msgid "Show GPU monitors"
+msgstr "Afficher le moniteur CPU"
+
+#: src/prefs.ts:337
+msgid "Show GPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:359
+#, fuzzy
+msgid "Show NPU monitors"
+msgstr "Afficher le moniteur CPU"
+
+#: src/prefs.ts:368
+msgid "Show NPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:392
+msgid "Show the memory monitor"
+msgstr "Afficher le moniteur mémoire"
+
+#: src/prefs.ts:421
+msgid "Show usage in GB"
+msgstr ""
+
+#: src/prefs.ts:434
+msgid "Show memory history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:459
+#, fuzzy
+msgid "Show the disk activity monitor"
+msgstr "Afficher le moniteur CPU"
+
+#: src/prefs.ts:461
+msgid "Show read/write speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:467
+msgid "Show disk activity history as area charts"
+msgstr ""
+
+#: src/prefs.ts:483
+#, fuzzy
+msgid "Show the filesystem monitor"
+msgstr "Afficher le moniteur mémoire"
+
+#: src/prefs.ts:512
+msgid "Filesystem to monitor in topbar"
+msgstr ""
+
+#: src/prefs.ts:522
+msgid "Filesystems to show in menu"
+msgstr ""
+
+#: src/prefs.ts:537 src/prefs.ts:653 src/vitals.ts:421 src/vitals.ts:426
+#: src/vitals.ts:434 src/vitals.ts:439
+msgid "Automatic"
+msgstr ""
+
+#: src/prefs.ts:599
+msgid "Show the network monitor"
+msgstr "Afficher le moniteur réseau"
+
+#: src/prefs.ts:602
+msgid "Show upload and download as stacked bars"
+msgstr ""
+
+#: src/prefs.ts:608
+msgid "Show upload/download speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:616
+msgid "Maximum speed (Mbps)"
+msgstr ""
+
+#: src/prefs.ts:639
+#, fuzzy
+msgid "Show network history as area charts"
+msgstr "Afficher le moniteur réseau"
+
+#: src/prefs.ts:673
+#, fuzzy
+msgid "Network device"
+msgstr "Utilisation du réseau"
+
+#: src/prefs.ts:684
+msgid "Bytes"
+msgstr ""
+
+#: src/prefs.ts:685
+msgid "Bits"
+msgstr ""
+
+#: src/prefs.ts:687
+msgid "Measurement unit"
+msgstr ""
+
+#~ msgid "Show memory monitor"
+#~ msgstr "Afficher le moniteur mémoire"
