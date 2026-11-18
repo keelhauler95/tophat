@@ -25,8 +25,10 @@ import { Orientation } from './meter.js';
 import { TopHatMonitor, MeterNoVal } from './monitor.js';
 import { IHistory, MaxHistoryLen, Vitals } from './vitals.js';
 
-export type AcceleratorKind = 'gpu';
-type UsageKind = 'percent';
+Gio._promisify(Gio.DataInputStream.prototype, 'read_line_async');
+
+export type AcceleratorKind = 'gpu' | 'npu';
+type UsageKind = 'percent' | 'microseconds';
 
 export interface AcceleratorDevice {
   kind: AcceleratorKind;
@@ -54,7 +56,10 @@ class UsageSample implements IHistory {
 }
 
 export function discoverAccelerators(): AcceleratorDevice[] {
-  return discoverDevices('gpu', '/sys/class/drm', /^card\d+$/);
+  return [
+    ...discoverDevices('gpu', '/sys/class/drm', /^card\d+$/),
+    ...discoverDevices('npu', '/sys/class/accel', /^accel\d+$/),
+  ];
 }
 
 function discoverDevices(
@@ -100,13 +105,22 @@ function discoverDevices(
       continue;
     }
 
-    const usagePath = findFirstExisting([`${deviceRoot}/gpu_busy_percent`]);
-    const usageKind: UsageKind = 'percent';
+    const usagePaths =
+      kind === 'gpu'
+        ? [`${deviceRoot}/gpu_busy_percent`]
+        : [`${deviceRoot}/npu_busy_percent`, `${deviceRoot}/npu_busy_time_us`];
+    const usagePath = usagePaths.find((path) => new File(path).exists());
+    const usageKind: UsageKind =
+      usagePath?.endsWith('_time_us') === true ? 'microseconds' : 'percent';
     const memoryUsedPath = findFirstExisting(
-      [`${deviceRoot}/mem_info_vram_used`]
+      kind === 'gpu'
+        ? [`${deviceRoot}/mem_info_vram_used`]
+        : [`${deviceRoot}/npu_memory_utilization`]
     );
     const memoryTotalPath = findFirstExisting(
-      [`${deviceRoot}/mem_info_vram_total`]
+      kind === 'gpu'
+        ? [`${deviceRoot}/mem_info_vram_total`]
+        : [`${deviceRoot}/npu_memory_total`]
     );
 
     const productName = findFirstValue([
@@ -178,6 +192,16 @@ export const AcceleratorMonitor = GObject.registerClass(
     private history: UsageSample[];
     private pollSource = 0;
     private polling = false;
+    private priorBusyTime: number | null = null;
+    private priorBusyTimeAt = 0;
+    private fdinfoCounters = new Map<string, number>();
+    private fdinfoSampleAt = 0;
+    private fdinfoErrorLogged = false;
+    private sensorProc: Gio.Subprocess | null = null;
+    private sensorStdin: Gio.OutputStream | null = null;
+    private sensorStdout: Gio.DataInputStream | null = null;
+    private sensorFailures = 0;
+    private sensorHelperDisabled = false;
     private fileErrors = new Set<string>();
     private monitorEnabled: boolean;
     private summaryInterval = 2.5;
@@ -193,7 +217,7 @@ export const AcceleratorMonitor = GObject.registerClass(
         gsettings
       );
       this.device = device;
-      this.setPanelIcon('pci');
+      this.setPanelIcon(device.kind === 'gpu' ? 'pci' : 'brain-augmented');
 
       this.usage = new St.Label({
         text: MeterNoVal,
@@ -249,7 +273,8 @@ export const AcceleratorMonitor = GObject.registerClass(
 
     private buildMenu() {
       const title = new St.Label({
-        text: _('GPU activity'),
+        text:
+          this.device.kind === 'gpu' ? _('GPU activity') : _('NPU activity'),
         style_class: 'tophat-menu-header',
       });
       this.addMenuRow(title, 0, 2, 1);
@@ -296,8 +321,14 @@ export const AcceleratorMonitor = GObject.registerClass(
       if (!this.monitorEnabled) {
         return;
       }
+      const minimumInterval =
+        this.device.kind === 'npu' &&
+        !this.device.usagePath &&
+        this.device.driver === 'amdxdna'
+          ? 1000
+          : 250;
       const interval = Math.round(
-        Math.max(intervalSeconds * 1000, 250)
+        Math.max(intervalSeconds * 1000, minimumInterval)
       );
       this.pollSource = GLib.timeout_add(GLib.PRIORITY_LOW, interval, () => {
         void this.poll();
@@ -351,8 +382,128 @@ export const AcceleratorMonitor = GObject.registerClass(
     }
 
     private async readUsage(): Promise<number | null> {
-      const value = await this.readNumber(this.device.usagePath);
-      return value === null ? null : Math.min(Math.max(value / 100, 0), 1);
+      if (this.device.usagePath) {
+        const value = await this.readNumber(this.device.usagePath);
+        if (value === null) {
+          return null;
+        }
+        if (this.device.usageKind === 'percent') {
+          return Math.min(Math.max(value / 100, 0), 1);
+        }
+        const now = GLib.get_monotonic_time();
+        const usage =
+          this.priorBusyTime === null || now <= this.priorBusyTimeAt
+            ? null
+            : (value - this.priorBusyTime) / (now - this.priorBusyTimeAt);
+        this.priorBusyTime = value;
+        this.priorBusyTimeAt = now;
+        return usage === null ? null : Math.min(Math.max(usage, 0), 1);
+      }
+      if (
+        this.device.kind === 'npu' &&
+        this.device.driver === 'amdxdna' &&
+        this.device.pciSlot
+      ) {
+        // The driver's sensor interface works for every process and is what
+        // Resources and Lemonade use; fdinfo only sees processes we can read.
+        const percent = await this.readNpuSensors();
+        if (percent !== null) {
+          return Math.min(Math.max(percent / 100, 0), 1);
+        }
+        return this.readAmdXdnaUsage();
+      }
+      return null;
+    }
+
+    // GJS cannot issue the ioctl that reads the sensors, so a small helper
+    // script does it. It answers one line per line we send it.
+    private startSensorHelper(): boolean {
+      const script = `${this.metadata.dir.get_path()}/npu-sensors.py`;
+      const id = this.device.id;
+      try {
+        const proc = Gio.Subprocess.new(
+          [
+            'python3',
+            script,
+            `/dev/accel/${id}`,
+            `/sys/class/accel/${id}/device/power_state`,
+          ],
+          Gio.SubprocessFlags.STDIN_PIPE |
+            Gio.SubprocessFlags.STDOUT_PIPE |
+            Gio.SubprocessFlags.STDERR_SILENCE
+        );
+        const stdin = proc.get_stdin_pipe();
+        const stdout = proc.get_stdout_pipe();
+        if (!stdin || !stdout) {
+          proc.force_exit();
+          throw new Error('helper pipes are unavailable');
+        }
+        this.sensorProc = proc;
+        this.sensorStdin = stdin;
+        this.sensorStdout = new Gio.DataInputStream({ base_stream: stdout });
+        return true;
+      } catch (err) {
+        this.sensorHelperDisabled = true;
+        console.warn(
+          `[TopHat] Unable to start the NPU sensor helper, falling back to fdinfo: ${err}`
+        );
+        return false;
+      }
+    }
+
+    private stopSensorHelper() {
+      try {
+        this.sensorStdin?.close(null);
+      } catch {
+        // The helper may already be gone
+      }
+      this.sensorProc?.force_exit();
+      this.sensorProc = null;
+      this.sensorStdin = null;
+      this.sensorStdout = null;
+    }
+
+    // Returns the NPU utilization as a percentage, or null if unavailable
+    private async readNpuSensors(): Promise<number | null> {
+      if (this.sensorHelperDisabled) {
+        return null;
+      }
+      if (!this.sensorProc && !this.startSensorHelper()) {
+        return null;
+      }
+      const cancellable = new Gio.Cancellable();
+      let timeoutId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+        timeoutId = 0;
+        cancellable.cancel();
+        return GLib.SOURCE_REMOVE;
+      });
+      try {
+        this.sensorStdin?.write_all(new TextEncoder().encode('\n'), null);
+        const [line] = (await this.sensorStdout?.read_line_async(
+          GLib.PRIORITY_DEFAULT,
+          cancellable
+        )) ?? [null];
+        if (!line) {
+          throw new Error('the helper stopped responding');
+        }
+        this.sensorFailures = 0;
+        const value = Number(new TextDecoder().decode(line));
+        return Number.isFinite(value) && value >= 0 ? value : null;
+      } catch (err) {
+        this.stopSensorHelper();
+        this.sensorFailures++;
+        if (this.sensorFailures >= 3) {
+          this.sensorHelperDisabled = true;
+          console.warn(
+            `[TopHat] The NPU sensor helper keeps failing, falling back to fdinfo: ${err}`
+          );
+        }
+        return null;
+      } finally {
+        if (timeoutId > 0) {
+          GLib.source_remove(timeoutId);
+        }
+      }
     }
 
     private async readNumber(path?: string): Promise<number | null> {
@@ -373,11 +524,125 @@ export const AcceleratorMonitor = GObject.registerClass(
       }
     }
 
+    private async readAmdXdnaUsage(): Promise<number | null> {
+      const now = GLib.get_monotonic_time() * 1000;
+      const counters = new Map<string, number>();
+      const fdinfoPaths = new Array<string>();
+      let pids: string[];
+      try {
+        pids = new File('/proc')
+          .listSync()
+          .filter((entry) => /^\d+$/.test(entry));
+      } catch (err) {
+        this.logFdinfoError(err);
+        return null;
+      }
+
+      let skippedDirectories = 0;
+      for (const pid of pids) {
+        try {
+          const fdinfoRoot = `/proc/${pid}/fdinfo`;
+          for (const fd of new File(fdinfoRoot).listSync()) {
+            if (/^\d+$/.test(fd)) {
+              fdinfoPaths.push(`${fdinfoRoot}/${fd}`);
+            }
+          }
+        } catch {
+          skippedDirectories++;
+        }
+      }
+      let skippedFiles = 0;
+      if (skippedDirectories > 0 && !this.fdinfoErrorLogged) {
+        this.logFdinfoError(
+          `${skippedDirectories} process fdinfo directories were inaccessible or exited`
+        );
+      }
+
+      for (let i = 0; i < fdinfoPaths.length; i += 64) {
+        const contents = await Promise.all(
+          fdinfoPaths.slice(i, i + 64).map(async (path) => {
+            try {
+              return { path, contents: await new File(path).read() };
+            } catch {
+              skippedFiles++;
+              return null;
+            }
+          })
+        );
+        for (const result of contents) {
+          if (!result) {
+            continue;
+          }
+          const fields = new Map<string, string>();
+          for (const line of result.contents.split('\n')) {
+            const match = line.match(/^([^:]+):\s*(.*)$/);
+            if (match) {
+              fields.set(match[1], match[2]);
+            }
+          }
+          if (
+            !['amdxdna_accel_driver', 'amdxdna'].includes(
+              fields.get('drm-driver') ?? ''
+            ) ||
+            fields.get('drm-pdev') !== this.device.pciSlot
+          ) {
+            continue;
+          }
+          const engineTime = fields
+            .get('drm-engine-npu-amdxdna')
+            ?.match(/^(\d+)\s+ns$/);
+          if (!engineTime) {
+            continue;
+          }
+          const clientId =
+            fields.get('drm-client-id') ??
+            result.path.split('/').slice(-2).join(':');
+          const key = `${result.path.split('/')[2]}:${clientId}`;
+          const value = Number(engineTime[1]);
+          counters.set(key, Math.max(counters.get(key) ?? 0, value));
+        }
+      }
+      if (skippedFiles > 0) {
+        this.logFdinfoError(
+          `${skippedFiles} process fdinfo files were inaccessible or exited`
+        );
+      }
+
+      let elapsedBusyTime = 0;
+      for (const [key, value] of counters) {
+        const prior = this.fdinfoCounters.get(key);
+        if (prior !== undefined && value >= prior) {
+          elapsedBusyTime += value - prior;
+        }
+      }
+      const elapsedTime =
+        this.fdinfoSampleAt > 0 ? now - this.fdinfoSampleAt : 0;
+      this.fdinfoCounters = counters;
+      this.fdinfoSampleAt = now;
+      if (counters.size === 0) {
+        return 0;
+      }
+      if (elapsedTime === 0) {
+        return null;
+      }
+      return Math.min(Math.max(elapsedBusyTime / elapsedTime, 0), 1);
+    }
+
+    private logFdinfoError(err: unknown) {
+      if (!this.fdinfoErrorLogged) {
+        console.warn(
+          `[TopHat] AMD NPU utilization may be incomplete because /proc fdinfo could not be fully read: ${err}`
+        );
+        this.fdinfoErrorLogged = true;
+      }
+    }
+
     public override destroy() {
       if (this.pollSource > 0) {
         GLib.source_remove(this.pollSource);
         this.pollSource = 0;
       }
+      this.stopSensorHelper();
       super.destroy();
     }
   }

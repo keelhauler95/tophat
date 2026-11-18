@@ -23,7 +23,7 @@ export enum DisplayType {
   Both,
 }
 
-export const MonitorKeys = ['cpu', 'mem', 'disk', 'net', 'gpu'];
+export const MonitorKeys = ['cpu', 'mem', 'disk', 'net', 'gpu', 'npu'];
 
 // Drop unknown/duplicate entries and append any monitors missing from the
 // saved order, so every monitor always has exactly one position.
