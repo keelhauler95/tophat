@@ -293,7 +293,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
   private buildNetPage() {
     const page = new Adw.PreferencesPage({
       title: _('Network'),
-      iconName: 'net-icon-symbolic',
+      iconName: 'tophat-arrows-bidirectional-symbolic',
     });
 
     const group = new Adw.PreferencesGroup({ title: _('Network') });
@@ -301,6 +301,43 @@ export default class TopHatPrefs extends ExtensionPreferences {
 
     // Enable network monitor
     this.addActionRow(_('Show the network monitor'), 'show-net', group);
+
+    this.addConditionalActionRow(
+      _('Show upload and download as stacked bars'),
+      'net-show-bars',
+      ['show-net'],
+      group
+    );
+    this.addConditionalActionRow(
+      _('Show upload/download speeds in panel'),
+      'net-show-values',
+      ['show-net'],
+      group
+    );
+
+    const settings = this.getSettings();
+    const maxSpeedRow = new Adw.SpinRow({
+      title: _('Maximum speed (Mbps)'),
+      adjustment: new Gtk.Adjustment({
+        lower: 1,
+        upper: 1_000_000,
+        step_increment: 1,
+        page_increment: 100,
+        page_size: 0,
+        value: settings.get_double('net-max-speed'),
+      }),
+      digits: 0,
+      numeric: true,
+      snap_to_ticks: true,
+    });
+    settings.bind(
+      'net-max-speed',
+      maxSpeedRow,
+      'value',
+      Gio.SettingsBindFlags.DEFAULT
+    );
+    group.add(maxSpeedRow);
+    this.setRowVisibleWhenAll(maxSpeedRow, ['show-net', 'net-show-bars']);
 
     // Select network device
     const netDevChoices = new Gtk.StringList();
@@ -323,25 +360,27 @@ export default class TopHatPrefs extends ExtensionPreferences {
           netDevChoices.append(iface);
         }
       }
-      this.addComboRow(
+      const deviceRow = this.addComboRow(
         _('Network device'),
         netDevChoices,
         'network-device',
         group,
         false
       );
+      this.setRowVisibleWhenAll(deviceRow, ['show-net']);
     });
 
     // Bits or bytes?
     const choices = new Gtk.StringList();
     choices.append(_('Bytes'));
     choices.append(_('Bits'));
-    this.addComboRow(
+    const unitRow = this.addComboRow(
       _('Measurement unit'),
       choices,
       'network-usage-unit',
       group
     );
+    this.setRowVisibleWhenAll(unitRow, ['show-net']);
 
     return page;
   }
@@ -363,6 +402,42 @@ export default class TopHatPrefs extends ExtensionPreferences {
     row.add_suffix(toggle);
     row.activatable_widget = toggle;
     return row;
+  }
+
+  private addConditionalActionRow(
+    label: string,
+    setting: string,
+    parentSettings: string | string[],
+    group: Adw.PreferencesGroup
+  ) {
+    const row = this.addActionRow(label, setting, group);
+    this.setRowVisibleWhenAll(
+      row,
+      Array.isArray(parentSettings) ? parentSettings : [parentSettings]
+    );
+    return row;
+  }
+
+  private setRowVisibleWhenAll(row: Gtk.Widget, settingsNames: string[]) {
+    this.setRowVisibleWhen(row, settingsNames, () => {
+      const settings = this.getSettings();
+      return settingsNames.every((name) => settings.get_boolean(name));
+    });
+  }
+
+  private setRowVisibleWhen(
+    row: Gtk.Widget,
+    settingsNames: string[],
+    predicate: () => boolean
+  ) {
+    const settings = this.getSettings();
+    const updateVisibility = () => {
+      row.visible = predicate();
+    };
+    updateVisibility();
+    for (const name of settingsNames) {
+      settings.connect(`changed::${name}`, updateVisibility);
+    }
   }
 
   private addColorRow(

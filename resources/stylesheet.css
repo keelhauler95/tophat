@@ -4,8 +4,32 @@
 }
 
 .tophat-panel-icon-net {
+  margin: 0 3px 0 0;
+  padding: 0;
+}
+
+.tophat-network-bars {
+  width: 1.3em;
+  min-width: 1.3em;
+  max-width: 1.3em;
+  spacing: 2px;
   margin: 0;
   padding: 0;
+}
+
+.tophat-network-bar-track {
+  width: 1.3em;
+  min-width: 1.3em;
+  max-width: 1.3em;
+  border-radius: 2px;
+}
+
+.tophat-meter.tophat-network-bar-track {
+  height: 0.5em;
+}
+
+.tophat-network-bar-track.tophat-meter-rounded {
+  border-radius: 4px;
 }
 
 .tophat-menu-button-box {
@@ -66,33 +90,8 @@
   background-color: rgba(10, 10, 10, 0.3);
 }
 
-.tophat-meter-bar {
-  margin: 0 1px 0 0;
-  padding: 0;
-}
-
-.tophat-meter-bar:last-child {
-  margin-right: 0;
-}
-
 .tophat-meter.tophat-meter-rounded {
-  border-radius: 4px;
-}
-
-.tophat-meter.tophat-meter-rounded .tophat-meter-bar {
-  border-radius: 4px 4px 0 0;
-}
-
-.tophat-meter.tophat-meter-rounded .tophat-meter-bar-first {
-  border-radius: 4px 4px 0 4px;
-}
-
-.tophat-meter.tophat-meter-rounded .tophat-meter-bar-last {
-  border-radius: 4px 4px 4px 0;
-}
-
-.tophat-meter.tophat-meter-rounded .tophat-meter-bar-only {
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .tophat-menu-grid {

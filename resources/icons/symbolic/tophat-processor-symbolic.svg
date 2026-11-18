@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="https://www.gtk.org/grappa" xmlns:ns3="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ns1:rendering="symbolic" ns1:version="1" ns1:state="0" ns1:state-names="outline state1 empty" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+<title>processor</title><path d="M 5 3 L 11 3 C 12.1079998 3, 13 3.89199996, 13 5 L 13 11 C 13 12.1079998, 12.1079998 13, 11 13 L 5 13 C 3.89199996 13, 3 12.1079998, 3 11 L 3 5 C 3 3.89199996, 3.89199996 3, 5 3 Z" id="border" ns1:states="outline state1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="150%" data-stroke-mid="2.0" data-stroke-min="0.5" data-stroke-max="3.0">
+    </path>
+  <path visibility="hidden" d="M 5.5 5.5 h 5 v 5 h -5 z" id="center" ns1:states="state1" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke="rgb(0,0,0)" fill-rule="nonzero" fill="rgb(0,0,0)" class="foreground-stroke foreground-fill foreground-stroke foreground-fill" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="200%" data-stroke-mid="1.0" data-stroke-min="0.25" data-stroke-max="2.0">
+    </path>
+  <path d="M 13 9.5 L 16 9.5 M 13 7.5 L 16 7.5 M 13 5.5 L 16 5.5 M 5.5 0 L 5.5 3 M 7.5 0 L 7.5 3 M 9.5 0 L 9.5 3 M 10.5 13 L 10.5 16 M 8.5 13 L 8.5 16 M 6.5 13 L 6.5 16 M 0 10.5 L 3 10.5 M 0 8.5 L 3 8.5 M 0 6.5 L 3 6.5" id="pins" ns1:states="outline state1" stroke-width="1" stroke-linecap="butt" stroke-linejoin="round" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="200%" data-stroke-mid="1.0" data-stroke-min="0.25" data-stroke-max="2.0">
+    </path>
+  <path d="M 5.5 5.5 h 5 v 5 h -5 z" id="middle" ns1:states="outline state1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="200%" data-stroke-mid="1.0" data-stroke-min="0.25" data-stroke-max="2.0">
+    </path>
+  <metadata>
+    <rdf:RDF>
+      <Work>
+        <license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cpu chip computer component silicon processor</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:creator>
+          <Agent>
+            <dc:title>Jakub Steiner</dc:title>
+          </Agent>
+        </dc:creator>
+      </Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

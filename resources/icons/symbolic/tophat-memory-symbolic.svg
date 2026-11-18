@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="https://www.gtk.org/grappa" xmlns:ns3="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ns1:rendering="symbolic" ns1:version="1" ns1:state="0" ns1:state-names="outline state1 empty" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+<title>memory</title><path d="M 3 1 C 1.89199996 1, 1 1.89199996, 1 3 L 1 9 C 1 9.7432127, 1.40133905 10.3895502, 2 10.734375 L 2 14 L 7 14 C 7 12.8954306, 7.89543056 12, 9 12 C 10.1045694 12, 11 12.8954306, 11 14 L 14 14 L 14 10.734375 C 14.5986614 10.3895502, 15 9.7432127, 15 9 L 15 3 C 15 1.89199996, 14.1079998 1, 13 1 L 3 1 Z" id="border" ns1:states="outline state1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="150%" data-stroke-mid="2.0" data-stroke-min="0.5" data-stroke-max="3.0">
+    </path>
+  <path visibility="hidden" d="M 10.5 4.5 L 10.5 7.5 L 11.5 7.5 L 11.5 4.5 Z M 7.5 4.5 L 7.5 7.5 L 8.5 7.5 L 8.5 4.5 Z M 4.5 4.5 L 4.5 7.5 L 5.5 7.5 L 5.5 4.5 Z" id="pseudofill" ns1:states="state1" stroke-width="1" stroke-linecap="round" stroke-linejoin="miter" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="200%" data-stroke-mid="1.0" data-stroke-min="0.25" data-stroke-max="2.0">
+    </path>
+  <path d="M 10.5 4.5 L 10.5 7.5 L 11.5 7.5 L 11.5 4.5 Z M 7.5 4.5 L 7.5 7.5 L 8.5 7.5 L 8.5 4.5 Z M 4.5 4.5 L 4.5 7.5 L 5.5 7.5 L 5.5 4.5 Z" id="outline" ns1:states="outline" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="miter" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:stroke-minwidth="50%" ns1:stroke-maxwidth="200%" data-stroke-mid="0.5" data-stroke-min="0.25" data-stroke-max="1.0">
+    </path>
+  <metadata>
+    <rdf:RDF>
+      <Work>
+        <license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>ram chip computer component silicon memory isa slot</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:creator>
+          <Agent>
+            <dc:title>Jakub Steiner</dc:title>
+          </Agent>
+        </dc:creator>
+      </Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

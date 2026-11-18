@@ -84,6 +84,22 @@
       <summary>Show the network monitor</summary>
       <description>Show the network monitor.</description>
     </key>
+    <key name="net-show-bars" type="b">
+      <default>false</default>
+      <summary>Show network speeds as stacked bars</summary>
+      <description>When enabled, show upload and download speeds as horizontal bars stacked in the panel.</description>
+    </key>
+    <key name="net-show-values" type="b">
+      <default>true</default>
+      <summary>Show network speeds in the panel</summary>
+      <description>Display upload and download speeds next to the network monitor.</description>
+    </key>
+    <key name="net-max-speed" type="d">
+      <default>1000.0</default>
+      <range min="1.0" max="1000000.0"/>
+      <summary>Maximum network speed for stacked bars</summary>
+      <description>The network speed in megabits per second that fills the stacked bars completely.</description>
+    </key>
     <key name="show-disk" type="b">
       <default>false</default>
       <summary>Show the disk activity monitor</summary>
