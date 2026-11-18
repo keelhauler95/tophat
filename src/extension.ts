@@ -22,6 +22,7 @@ import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import { File } from './file.js';
+import { normalizeMonitorOrder } from './helpers.js';
 import { Vitals, CpuModel } from './vitals.js';
 import { TopHatContainer } from './container.js';
 import { CpuMonitor } from './cpu.js';
@@ -29,6 +30,11 @@ import { MemMonitor } from './mem.js';
 import { DiskMonitor } from './disk.js';
 import { NetMonitor } from './net.js';
 import { TopHatMonitor } from './monitor.js';
+import {
+  AcceleratorMonitor,
+  discoverAccelerators,
+  type AcceleratorDevice,
+} from './accelerator.js';
 
 enum MenuPosition {
   LeftEdge,
@@ -43,11 +49,13 @@ export default class TopHat extends Extension {
   private signals = new Array<number>();
   private vitals?: Vitals;
   private container?: TopHatContainer;
+  private accelerators: AcceleratorDevice[] = [];
 
   public enable() {
     this.gsettings = this.getSettings();
     const f = new File('/proc/cpuinfo');
     const cpuModel = this.parseCpuOverview(f.readSync());
+    this.accelerators = discoverAccelerators();
     this.vitals = new Vitals(cpuModel, this.gsettings);
     this.vitals.start();
     this.addToPanel();
@@ -55,6 +63,10 @@ export default class TopHat extends Extension {
       this.addToPanel();
     });
     this.signals.push(id);
+    const orderId = this.gsettings.connect('changed::monitor-order', () => {
+      this.addToPanel();
+    });
+    this.signals.push(orderId);
   }
 
   public disable() {
@@ -65,6 +77,7 @@ export default class TopHat extends Extension {
     });
     this.signals.length = 0;
     this.gsettings = undefined;
+    this.accelerators = [];
     this.vitals?.stop();
     this.vitals = undefined;
   }
@@ -173,10 +186,41 @@ export default class TopHat extends Extension {
     }
     this.container?.destroy();
     this.container = new TopHatContainer(0.5, 'TopHat');
-    this.container.addMonitor(new CpuMonitor(this.metadata, this.gsettings));
-    this.container.addMonitor(new MemMonitor(this.metadata, this.gsettings));
-    this.container.addMonitor(new DiskMonitor(this.metadata, this.gsettings));
-    this.container.addMonitor(new NetMonitor(this.metadata, this.gsettings));
+    const order = normalizeMonitorOrder(
+      this.gsettings.get_strv('monitor-order')
+    );
+    for (const key of order) {
+      switch (key) {
+        case 'cpu':
+          this.container.addMonitor(
+            new CpuMonitor(this.metadata, this.gsettings)
+          );
+          break;
+        case 'mem':
+          this.container.addMonitor(
+            new MemMonitor(this.metadata, this.gsettings)
+          );
+          break;
+        case 'disk':
+          this.container.addMonitor(
+            new DiskMonitor(this.metadata, this.gsettings)
+          );
+          break;
+        case 'net':
+          this.container.addMonitor(
+            new NetMonitor(this.metadata, this.gsettings)
+          );
+          break;
+        default:
+          for (const device of this.accelerators) {
+            if (device.kind === key) {
+              this.container.addMonitor(
+                new AcceleratorMonitor(this.metadata, this.gsettings, device)
+              );
+            }
+          }
+      }
+    }
     const pref = this.getPreferredPanelAttributes();
     this.container = Main.panel.addToStatusArea(
       'TopHat',

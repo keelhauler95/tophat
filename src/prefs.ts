@@ -28,7 +28,7 @@ import {
 // @ts-expect-error "Module exists"
 import * as Config from 'resource:///org/gnome/Shell/Extensions/js/misc/config.js';
 
-import { readFileSystems } from './helpers.js';
+import { normalizeMonitorOrder, readFileSystems } from './helpers.js';
 
 const GnomeMajorVer = parseInt(Config.PACKAGE_VERSION.split('.')[0]);
 
@@ -39,6 +39,7 @@ export default class TopHatPrefs extends ExtensionPreferences {
 
       window.add(this.buildGeneralPage());
       window.add(this.buildCpuPage());
+      window.add(this.buildGpuPage());
       window.add(this.buildMemPage());
       window.add(this.buildDiskPage());
       window.add(this.buildNetPage());
@@ -134,7 +135,63 @@ export default class TopHatPrefs extends ExtensionPreferences {
       group
     );
 
+    page.add(this.buildMonitorOrderGroup());
+
     return page;
+  }
+
+  private buildMonitorOrderGroup() {
+    const settings = this.getSettings();
+    const group = new Adw.PreferencesGroup({
+      title: _('Monitor order'),
+      description: _('Order of the monitors in the panel'),
+    });
+    const names: Record<string, string> = {
+      cpu: _('CPU'),
+      mem: _('Memory'),
+      disk: _('Disk'),
+      net: _('Network'),
+      gpu: _('GPU'),
+    };
+    let rows = new Array<Adw.ActionRow>();
+
+    const render = () => {
+      for (const row of rows) {
+        group.remove(row);
+      }
+      rows = [];
+      const order = normalizeMonitorOrder(settings.get_strv('monitor-order'));
+      order.forEach((key, i) => {
+        const row = new Adw.ActionRow({ title: names[key] });
+        const addMoveButton = (
+          iconName: string,
+          tooltip: string,
+          target: number
+        ) => {
+          const button = new Gtk.Button({
+            iconName,
+            tooltipText: tooltip,
+            valign: Gtk.Align.CENTER,
+            cssClasses: ['flat'],
+            sensitive: target >= 0 && target < order.length,
+          });
+          button.connect('clicked', () => {
+            const next = [...order];
+            [next[i], next[target]] = [next[target], next[i]];
+            settings.set_strv('monitor-order', next);
+          });
+          row.add_suffix(button);
+        };
+        addMoveButton('go-up-symbolic', _('Move up'), i - 1);
+        addMoveButton('go-down-symbolic', _('Move down'), i + 1);
+        group.add(row);
+        rows.push(row);
+      });
+    };
+
+    settings.connect('changed::monitor-order', render);
+    render();
+    return group;
   }
 
   private buildCpuPage() {
@@ -169,6 +226,24 @@ export default class TopHatPrefs extends ExtensionPreferences {
       group
     );
 
+    return page;
+  }
+
+  private buildGpuPage() {
+    const page = new Adw.PreferencesPage({
+      title: _('GPU'),
+      iconName: 'tophat-pci-symbolic',
+    });
+    const group = new Adw.PreferencesGroup({ title: _('GPU') });
+    page.add(group);
+
+    this.addActionRow(_('Show GPU monitors'), 'show-gpu', group);
+    this.addConditionalActionRow(
+      _('Show usage value in panel'),
+      'gpu-show-value',
+      ['show-gpu'],
+      group
+    );
     return page;
   }
 

@@ -34,6 +34,11 @@
       <summary>Position in the panel</summary>
       <description>Where in the panel the monitors should be positioned.</description>
     </key>
+    <key name="monitor-order" type="as">
+      <default>['cpu', 'mem', 'disk', 'net', 'gpu']</default>
+      <summary>Order of the monitors in the panel</summary>
+      <description>The order in which the monitors are shown in the panel, from first to last. Valid entries are cpu, mem, disk, net, and gpu.</description>
+    </key>
         <key name="cpu-display" enum="org.gnome.shell.extensions.tophat.visualization">
       <default>'chart'</default>
       <summary>How to visualize the CPU monitor</summary>
@@ -104,6 +109,16 @@
       <default>false</default>
       <summary>Show the disk activity monitor</summary>
       <description>Show the disk monitor.</description>
+    </key>
+    <key name="show-gpu" type="b">
+      <default>true</default>
+      <summary>Show GPU monitors</summary>
+      <description>Show a monitor for each detected GPU.</description>
+    </key>
+    <key name="gpu-show-value" type="b">
+      <default>true</default>
+      <summary>Show GPU usage value in the panel</summary>
+      <description>Display GPU usage values next to the GPU monitors.</description>
     </key>
     <key name="show-fs" type="b">
       <default>true</default>
