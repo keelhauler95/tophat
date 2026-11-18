@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="https://www.gtk.org/grappa" xmlns:ns3="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ns1:rendering="symbolic" ns1:version="1" ns1:state="0" ns1:state-names="outline empty" viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet">
+<title>arrows-bidirectional</title><path d="M 12 2 L 15 5 L 12 8 M 4 8 L 1 11 L 4 14 M 11 11 L 1 11 M 5 5 L 15 5" id="path7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="rgb(0,0,0)" fill="none" class="foreground-stroke transparent-fill foreground-stroke" ns1:states="outline" ns1:stroke-minwidth="25%" ns1:stroke-maxwidth="150%" data-stroke-mid="2.0" data-stroke-min="0.5" data-stroke-max="3.0">
+    </path>
+  <metadata>
+    <rdf:RDF>
+      <Work>
+        <license rdf:resource="https://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>network-transmit-receive arrow direction</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:creator>
+          <Agent>
+            <dc:title>Jakub Steiner</dc:title>
+          </Agent>
+        </dc:creator>
+      </Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

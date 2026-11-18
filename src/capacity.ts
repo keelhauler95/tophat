@@ -43,7 +43,8 @@ export const CapacityBar = GObject.registerClass(
       this.color = new Cogl.Color();
     }
 
-    public setUsage(usage: number) {
+    // The bar glides to the new usage over `animationMs` (the refresh interval)
+    public setUsage(usage: number, animationMs = AnimationDuration) {
       if (Number.isNaN(usage)) {
         console.warn('setUsage(): usage is NaN');
         usage = 0;
@@ -55,7 +56,7 @@ export const CapacityBar = GObject.registerClass(
         usage = 1;
       }
       this.remove_transition('usage');
-      const duration = adjustAnimationTime(AnimationDuration);
+      const duration = adjustAnimationTime(animationMs);
       if (duration > 0) {
         const t = Clutter.PropertyTransition.new_for_actor(this, 'value');
         t.set_progress_mode(AnimationEasing);

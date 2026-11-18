@@ -75,10 +75,7 @@ export const DiskMonitor = GObject.registerClass(
     constructor(metadata: ExtensionMetadata, gsettings: Gio.Settings) {
       super('Disk Monitor', metadata, gsettings);
 
-      const gicon = Gio.icon_new_for_string(
-        `${this.metadata.path}/icons/hicolor/scalable/actions/disk-icon-symbolic.svg`
-      );
-      this.icon.set_gicon(gicon);
+      this.setPanelIcon('drive-harddisk');
 
       this.usage = new St.Label({
         text: MeterNoVal,

@@ -52,10 +52,7 @@ export const MemMonitor = GObject.registerClass(
 
     constructor(metadata: ExtensionMetadata, gsettings: Gio.Settings) {
       super('Memory Monitor', metadata, gsettings);
-      const gicon = Gio.icon_new_for_string(
-        `${this.metadata.path}/icons/hicolor/scalable/actions/mem-icon-symbolic.svg`
-      );
-      this.icon.set_gicon(gicon);
+      this.setPanelIcon('memory');
 
       this.usage = new St.Label({
         text: MeterNoVal,
@@ -221,7 +218,7 @@ export const MemMonitor = GObject.registerClass(
         }
         this.menuMemUsage.text = s;
         this.meter.setBarSizes([vitals.ram_usage]);
-        this.menuMemCap.setUsage(vitals.ram_usage);
+        this.menuMemCap.setUsage(vitals.ram_usage, this.updateIntervalMs);
       });
       this.vitalsSignals.push(id);
 
@@ -245,7 +242,7 @@ export const MemMonitor = GObject.registerClass(
         // console.log(`swap-usage: ${vitals.swap_usage}`);
         const s = (vitals.swap_usage * 100).toFixed(0) + '%';
         this.menuSwapUsage.text = s;
-        this.menuSwapCap.setUsage(vitals.swap_usage);
+        this.menuSwapCap.setUsage(vitals.swap_usage, this.updateIntervalMs);
       });
       this.vitalsSignals.push(id);
 

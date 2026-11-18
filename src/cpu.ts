@@ -51,10 +51,7 @@ export const CpuMonitor = GObject.registerClass(
     constructor(metadata: ExtensionMetadata, gsettings: Gio.Settings) {
       super('CPU Monitor', metadata, gsettings);
 
-      const gicon = Gio.icon_new_for_string(
-        `${this.metadata.path}/icons/hicolor/scalable/actions/cpu-icon-symbolic.svg`
-      );
-      this.icon.set_gicon(gicon);
+      this.setPanelIcon('processor');
 
       this.usage = new St.Label({
         text: MeterNoVal,
@@ -230,7 +227,7 @@ export const CpuMonitor = GObject.registerClass(
         const s = percent.toFixed(0) + '%';
         this.usage.text = s;
         this.menuCpuUsage.text = s;
-        this.menuCpuCap.setUsage(percent / 100);
+        this.menuCpuCap.setUsage(percent / 100, this.updateIntervalMs);
         if (this.showCores) {
           if (this.meter.getNumBars() === 1) {
             this.meter.setNumBars(vitals.getCpuCoreUsage().length);

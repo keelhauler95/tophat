@@ -204,6 +204,11 @@ export const TopHatMonitor = GObject.registerClass(
       });
     }
 
+    protected setPanelIcon(iconName: string) {
+      const path = `${this.metadata.dir.get_path()}/icons/hicolor/scalable/actions/${iconName}.svg`;
+      this.icon.gicon = Gio.FileIcon.new(Gio.File.new_for_path(path));
+    }
+
     public override add_child(w: St.Widget) {
       if (this.box) {
         this.box.add_child(w);
@@ -297,9 +302,21 @@ export const TopHatMonitor = GObject.registerClass(
       }
     }
 
+    // How long fills take to glide from one reading to the next. Matching
+    // the refresh interval keeps them in constant, smooth motion.
+    protected updateIntervalMs = 2500;
+
     public bindVitals(vitals: Vitals) {
       this.vitals = vitals;
+      const updateInterval = () => {
+        this.updateIntervalMs = vitals.summary_interval * 1000;
+        this.meter.setUpdateInterval(this.updateIntervalMs);
+      };
+      if (vitals.summary_interval > 0) {
+        updateInterval();
+      }
       const id = vitals.connect('notify::summary-interval', () => {
+        updateInterval();
         const then = this.formatChartLimit(vitals.summary_interval);
         this.historyChart?.setThen(then);
       });
