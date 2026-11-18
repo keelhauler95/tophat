@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/accelerator.ts:281
 #, fuzzy
@@ -67,21 +67,18 @@ msgstr "系统正常运行时间"
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d 天"
-msgstr[1] "%d 天"
 
 #: src/cpu.ts:345
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d 小时"
-msgstr[1] "%d 小时"
 
 #: src/cpu.ts:347
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d 分钟"
-msgstr[1] "%d 分钟"
 
 #: src/disk.ts:181 src/prefs.ts:455
 msgid "Disk activity"
@@ -148,7 +145,6 @@ msgstr ""
 msgid "%d min ago"
 msgid_plural "%d mins ago"
 msgstr[0] "%d 分钟前"
-msgstr[1] "%d 分钟前"
 
 #: src/net.ts:360
 msgid "Network activity"

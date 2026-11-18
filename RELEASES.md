@@ -174,5 +174,5 @@ based on [Keep a Changelog].
 
 The first public release. 🎉️
 
-[TopHat]: https://extensions.gnome.org/extension/5219/tophat/
+[TopHat]: https://github.com/keelhauler95/tophat
 [Keep a Changelog]: https://keepachangelog.com/en/1.0.0/

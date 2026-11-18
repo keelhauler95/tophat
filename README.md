@@ -14,8 +14,10 @@ included in each release.
 
 ## Installation
 
-Install TopHat from the [GNOME Shell extensions
-page](https://extensions.gnome.org/extension/5219/tophat/).
+This fork is hosted at
+[github.com/keelhauler95/tophat](https://github.com/keelhauler95/tophat).
+It is not listed on GNOME Extensions; build and install it from source using
+the instructions below.
 
 ### Requirements
 
@@ -47,43 +49,47 @@ The latest release of TopHat has been tested on the following systems:
 Even if your system is not in this list, as long as it meets the
 requirements mentioned above, you should be able to run TopHat. If not, please
 file a bug report on [the issue
-tracker](https://github.com/fflewddur/tophat/issues).
+tracker](https://github.com/keelhauler95/tophat/issues).
 
 ### Manual installation
 
-If you prefer not to use https://extensions.gnome.org to install and update
-GNOME Shell extensions, you can manually install TopHat by following these
-steps. You may need to install the `unzip` and `gnome-extensions-app`
-utilities first.
+To install this fork, clone it and build a package. You need Node.js with
+Corepack, Yarn, and the GNOME extension build tools.
 
-1. Download the latest TopHat release from
-   https://github.com/fflewddur/tophat/releases.
-2. Ensure your local extension directory exists by running the command `mkdir
--p ~/.local/share/gnome-shell/extensions/tophat@fflewddur.github.io`.
-3. Extract the TopHat ZIP file into your local extension directory with the
-   command `unzip [path-to-tophat.zip] -d
-~/.local/share/gnome-shell/extensions/tophat@fflewddur.github.io`
-4. Log out of your computer and log back in (or restart your system).
-5. Enable TopHat with the command `gnome-extensions enable tophat@fflewddur.github.io`.
+```sh
+git clone https://github.com/keelhauler95/tophat.git
+cd tophat
+corepack yarn install --immutable
+yarn build
+./resources/package.sh
+```
+
+Install the generated ZIP with GNOME Extensions, then enable it. The current
+package is named `tophat@keelhauler95.github.io.v24.shell-extension.zip`:
+
+```sh
+gnome-extensions install --force ./tophat@keelhauler95.github.io.v24.shell-extension.zip
+gnome-extensions enable tophat@keelhauler95.github.io
+```
 
 ## Settings
 
 All of TopHat's settings are displayed in its preferences window, and this is the recommended approach for modifying them. If, however, you need to work with these from the command like, you can use the `gsettings` tools to read and modify them. To view all available settings and their current values, use the command:
 
 ```
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/tophat@fflewddur.github.io/schemas list-recursively org.gnome.shell.extensions.tophat
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/tophat@keelhauler95.github.io/schemas list-recursively org.gnome.shell.extensions.tophat
 ```
 
 Settings can be adjusted with the command:
 
 ```
-gsettings --schemadir ~/.local/share/gnome-shell/extensions/tophat@fflewddur.github.io/schemas set org.gnome.shell.extensions.tophat [key] [value]
+gsettings --schemadir ~/.local/share/gnome-shell/extensions/tophat@keelhauler95.github.io/schemas set org.gnome.shell.extensions.tophat [key] [value]
 ```
 
 ## Contributing
 
 Contributions to improve TopHat are welcome! To avoid duplicate work, check
-[the issue tracker](https://github.com/fflewddur/tophat/issues) first. If an
+[the issue tracker](https://github.com/keelhauler95/tophat/issues) first. If an
 issue doesn't already exist for your idea, please create one.
 
 TopHat uses Yarn to manage dependencies and define development tasks. Learn
@@ -119,7 +125,7 @@ To test the development version:
     cd [path to tophat repo]
     yarn build
     mkdir -p ~/.local/share/gnome-shell/extensions/
-    ln -s [path to tophat repo]/dist ~/.local/share/gnome-shell/extensions/tophat@fflewddur.github.io
+    ln -s [path to tophat repo]/dist ~/.local/share/gnome-shell/extensions/tophat@keelhauler95.github.io
 
 ## License
 
