@@ -27,6 +27,7 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import {
   Extension,
   ExtensionMetadata,
+  gettext as _,
   ngettext,
 } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
@@ -242,25 +243,40 @@ export const TopHatMonitor = GObject.registerClass(
         return;
       }
 
-      // System Monitor
-      const appSys = Shell.AppSystem.get_default();
-      let app = appSys.lookup_app('org.gnome.SystemMonitor.desktop');
-      if (!app) {
-        app = appSys.lookup_app('gnome-system-monitor.desktop');
-      }
-      if (app) {
-        const button = new St.Button({ style_class: 'button' });
-        button.child = new St.Icon({
-          icon_name: 'org.gnome.SystemMonitor-symbolic',
+      // System resource monitor
+      const appButton = new St.Button({ style_class: 'button' });
+      const updateAppIcon = () => {
+        const resources =
+          this.gsettings.get_string('monitor-app') === 'resources';
+        appButton.child = new St.Icon({
+          icon_name: resources
+            ? 'net.nokyan.Resources-symbolic'
+            : 'org.gnome.SystemMonitor-symbolic',
           fallback_icon_name: 'utilities-system-monitor-symbolic',
         });
-
-        button.connect('clicked', () => {
-          this.menu.close(true);
-          app.activate();
-        });
-        this.menuActionBox.add_child(button);
-      }
+      };
+      updateAppIcon();
+      const appSettingId = this.gsettings.connect(
+        'changed::monitor-app',
+        updateAppIcon
+      );
+      this.settingsSignals.push(appSettingId);
+      appButton.connect('clicked', () => {
+        this.menu.close(true);
+        const appName = this.gsettings.get_string('monitor-app');
+        const app = this.lookupMonitorApp(appName);
+        if (!app) {
+          Main.notifyError(
+            _('Unable to open the selected monitor application'),
+            appName === 'resources'
+              ? _('Resources is not installed.')
+              : _('GNOME System Monitor is not installed.')
+          );
+          return;
+        }
+        app.activate();
+      });
+      this.menuActionBox.add_child(appButton);
 
       // TopHat preferences
       const button = new St.Button({ style_class: 'button' });
@@ -269,12 +285,14 @@ export const TopHatMonitor = GObject.registerClass(
       });
       button.connect('clicked', () => {
         this.menu.close(true);
-        try {
-          const obj = Extension.lookupByUUID('tophat@fflewddur.github.io');
-          obj?.openPreferences();
-        } catch (err) {
-          console.error(`[TopHat] Error opening settings: ${err}`);
+        const extension = Extension.lookupByUUID(this.metadata.uuid);
+        if (!extension) {
+          console.error(
+            `[TopHat] Could not find running extension with UUID ${this.metadata.uuid}`
+          );
+          return;
         }
+        extension.openPreferences();
       });
       this.menuActionBox.add_child(button);
       this.addMenuRow(this.menuActionBox, 0, this.menuNumCols, 1);
@@ -285,6 +303,20 @@ export const TopHatMonitor = GObject.registerClass(
         (_: PopupMenu.PopupMenuBase, open: boolean) => {
           this.vitals?.detailsNeededInUI(open);
         }
+      );
+    }
+
+    private lookupMonitorApp(appName: string): Shell.App | null {
+      const appSystem = Shell.AppSystem.get_default();
+      if (appName === 'resources') {
+        return (
+          appSystem.lookup_app('net.nokyan.Resources.desktop') ??
+          appSystem.lookup_app('net.nokyan.Resources')
+        );
+      }
+      return (
+        appSystem.lookup_app('org.gnome.SystemMonitor.desktop') ??
+        appSystem.lookup_app('gnome-system-monitor.desktop')
       );
     }
 
