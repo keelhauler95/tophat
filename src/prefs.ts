@@ -92,6 +92,16 @@ export default class TopHatPrefs extends ExtensionPreferences {
     choices.append(_('Fastest'));
     this.addComboRow(_('Refresh speed'), choices, 'refresh-rate', group);
 
+    choices = new Gtk.StringList();
+    choices.append(_('System Monitor'));
+    choices.append(_('Resources'));
+    this.addComboRow(
+      _('Application opened by monitor buttons'),
+      choices,
+      'monitor-app',
+      group
+    );
+
     // Meter color
     let control: Gtk.Switch | null;
     control = null;
