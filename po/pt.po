@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TopHat\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-10 10:52-0700\n"
+"POT-Creation-Date: 2026-11-16 23:36+0100\n"
 "PO-Revision-Date: 2023-08-17 14:33-0300\n"
 "Last-Translator: Mateus Santos <swyknox@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <>\n"
@@ -19,380 +19,480 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "X-Generator: Gtranslator 42.0\n"
 
-#: tophat@fflewddur.github.io/prefs.js:40
-#: tophat@fflewddur.github.io/prefs.js:179
-#: tophat@fflewddur.github.io/prefs.js:343
-msgid "General"
-msgstr "Geral"
-
-#: tophat@fflewddur.github.io/prefs.js:44
-#: tophat@fflewddur.github.io/prefs.js:181
-#: tophat@fflewddur.github.io/prefs.js:345
-msgid "Left edge"
-msgstr "Borda esquerda"
-
-#: tophat@fflewddur.github.io/prefs.js:45
-#: tophat@fflewddur.github.io/prefs.js:182
-#: tophat@fflewddur.github.io/prefs.js:346
-msgid "Left"
-msgstr "Esquerda"
-
-#: tophat@fflewddur.github.io/prefs.js:46
-#: tophat@fflewddur.github.io/prefs.js:183
-#: tophat@fflewddur.github.io/prefs.js:347
-msgid "Center"
-msgstr "Centro"
-
-#: tophat@fflewddur.github.io/prefs.js:47
-#: tophat@fflewddur.github.io/prefs.js:184
-#: tophat@fflewddur.github.io/prefs.js:348
-msgid "Right"
-msgstr "Direita"
-
-#: tophat@fflewddur.github.io/prefs.js:48
-#: tophat@fflewddur.github.io/prefs.js:185
-#: tophat@fflewddur.github.io/prefs.js:349
-msgid "Right edge"
-msgstr "Borda direita"
-
-#: tophat@fflewddur.github.io/prefs.js:49
-#: tophat@fflewddur.github.io/prefs.js:186
-#: tophat@fflewddur.github.io/prefs.js:350
-msgid "Position in panel"
-msgstr "Posição no painel"
-
-#: tophat@fflewddur.github.io/prefs.js:51
-#: tophat@fflewddur.github.io/prefs.js:188
-#: tophat@fflewddur.github.io/prefs.js:352
-msgid "Slow"
-msgstr "Devagar"
-
-#: tophat@fflewddur.github.io/prefs.js:52
-#: tophat@fflewddur.github.io/prefs.js:189
-#: tophat@fflewddur.github.io/prefs.js:353
-msgid "Medium"
-msgstr "Mediano"
-
-#: tophat@fflewddur.github.io/prefs.js:53
-#: tophat@fflewddur.github.io/prefs.js:190
-#: tophat@fflewddur.github.io/prefs.js:354
-msgid "Fast"
-msgstr "Rápido"
-
-#: tophat@fflewddur.github.io/prefs.js:54
-#: tophat@fflewddur.github.io/prefs.js:191
-#: tophat@fflewddur.github.io/prefs.js:355
-msgid "Refresh speed"
-msgstr "Velocidade da atualização"
-
-#: tophat@fflewddur.github.io/prefs.js:55
-#: tophat@fflewddur.github.io/prefs.js:192
-#: tophat@fflewddur.github.io/prefs.js:356
-msgid "Meter color"
-msgstr "Cor do medidor"
-
-#: tophat@fflewddur.github.io/prefs.js:56
-#: tophat@fflewddur.github.io/prefs.js:193
-#: tophat@fflewddur.github.io/prefs.js:357
-msgid "Show icons beside monitors"
-msgstr "Mostrar ícones ao lado dos medidores"
-
-#: tophat@fflewddur.github.io/prefs.js:57
-#: tophat@fflewddur.github.io/prefs.js:194
-#: tophat@fflewddur.github.io/prefs.js:358
-msgid "Show animations"
-msgstr "Mostrar animações"
-
-#: tophat@fflewddur.github.io/prefs.js:59
-#: tophat@fflewddur.github.io/prefs.js:201
-#: tophat@fflewddur.github.io/prefs.js:365
-msgid "Processor"
-msgstr "Processador"
-
-#: tophat@fflewddur.github.io/prefs.js:60
-#: tophat@fflewddur.github.io/prefs.js:202
-#: tophat@fflewddur.github.io/prefs.js:366
-msgid "Show the CPU monitor"
-msgstr "Mostrar o monitor da CPU"
-
-#: tophat@fflewddur.github.io/prefs.js:62
-#: tophat@fflewddur.github.io/prefs.js:72
-#: tophat@fflewddur.github.io/prefs.js:86
-#: tophat@fflewddur.github.io/prefs.js:204
-#: tophat@fflewddur.github.io/prefs.js:218
-#: tophat@fflewddur.github.io/prefs.js:236
-#: tophat@fflewddur.github.io/prefs.js:368
-#: tophat@fflewddur.github.io/prefs.js:382
-#: tophat@fflewddur.github.io/prefs.js:400
-msgid "Usage meter"
-msgstr "Medidor de uso"
-
-#: tophat@fflewddur.github.io/prefs.js:63
-#: tophat@fflewddur.github.io/prefs.js:73
-#: tophat@fflewddur.github.io/prefs.js:87
-#: tophat@fflewddur.github.io/prefs.js:205
-#: tophat@fflewddur.github.io/prefs.js:219
-#: tophat@fflewddur.github.io/prefs.js:237
-#: tophat@fflewddur.github.io/prefs.js:369
-#: tophat@fflewddur.github.io/prefs.js:383
-#: tophat@fflewddur.github.io/prefs.js:401
-msgid "Numeric value"
-msgstr "Valor numérico"
-
-#: tophat@fflewddur.github.io/prefs.js:64
-#: tophat@fflewddur.github.io/prefs.js:74
-#: tophat@fflewddur.github.io/prefs.js:88
-#: tophat@fflewddur.github.io/prefs.js:206
-#: tophat@fflewddur.github.io/prefs.js:220
-#: tophat@fflewddur.github.io/prefs.js:238
-#: tophat@fflewddur.github.io/prefs.js:370
-#: tophat@fflewddur.github.io/prefs.js:384
-#: tophat@fflewddur.github.io/prefs.js:402
-msgid "Both meter and value"
-msgstr "Medidor e valor numérico"
-
-#: tophat@fflewddur.github.io/prefs.js:65
-#: tophat@fflewddur.github.io/prefs.js:75
-#: tophat@fflewddur.github.io/prefs.js:207
-#: tophat@fflewddur.github.io/prefs.js:221
-#: tophat@fflewddur.github.io/prefs.js:371
-#: tophat@fflewddur.github.io/prefs.js:385
-msgid "Show as"
-msgstr "Mostrar como"
-
-#: tophat@fflewddur.github.io/prefs.js:66
-#: tophat@fflewddur.github.io/prefs.js:208
-#: tophat@fflewddur.github.io/prefs.js:372
-msgid "Show each core"
-msgstr "Mostrar todos os núcleos"
-
-#: tophat@fflewddur.github.io/prefs.js:69
-#: tophat@fflewddur.github.io/prefs.js:215
-#: tophat@fflewddur.github.io/prefs.js:379
-msgid "Memory"
-msgstr "Memória"
-
-#: tophat@fflewddur.github.io/prefs.js:70
-#: tophat@fflewddur.github.io/prefs.js:216
-#: tophat@fflewddur.github.io/prefs.js:380
-msgid "Show the memory monitor"
-msgstr "Mostrar o monitor de memória"
-
-#: tophat@fflewddur.github.io/prefs.js:78
-#: tophat@fflewddur.github.io/prefs.js:228
-#: tophat@fflewddur.github.io/prefs.js:392
-msgid "Disk"
-msgstr "Disco"
-
-#: tophat@fflewddur.github.io/prefs.js:79
-#: tophat@fflewddur.github.io/prefs.js:229
-#: tophat@fflewddur.github.io/prefs.js:393
-msgid "Show the disk monitor"
-msgstr "Mostrar o monitor de disco"
-
-#: tophat@fflewddur.github.io/prefs.js:81
-#: tophat@fflewddur.github.io/prefs.js:231
-#: tophat@fflewddur.github.io/prefs.js:395
-msgid "Available storage"
-msgstr "Armazenamento disponivel"
-
-#: tophat@fflewddur.github.io/prefs.js:82
-#: tophat@fflewddur.github.io/prefs.js:232
-#: tophat@fflewddur.github.io/prefs.js:396
-#: tophat@fflewddur.github.io/lib/fs.js:266
-msgid "Disk activity"
+#: src/accelerator.ts:281
+#, fuzzy
+msgid "GPU activity"
 msgstr "Atividade do disco"
 
-#: tophat@fflewddur.github.io/prefs.js:83
-#: tophat@fflewddur.github.io/prefs.js:233
-#: tophat@fflewddur.github.io/prefs.js:397
-msgid "Storage and activity"
-msgstr "Armazenamento e atividade"
+#: src/accelerator.ts:281
+#, fuzzy
+msgid "NPU activity"
+msgstr "Atividade do disco"
 
-#: tophat@fflewddur.github.io/prefs.js:84
-#: tophat@fflewddur.github.io/prefs.js:234
-#: tophat@fflewddur.github.io/prefs.js:398
-msgid "Monitor shows"
-msgstr "Mostrar monitor para"
-
-#: tophat@fflewddur.github.io/prefs.js:89
-#: tophat@fflewddur.github.io/prefs.js:239
-#: tophat@fflewddur.github.io/prefs.js:403
-msgid "Show available storage as"
-msgstr "Mostrar armazenamento disponível como"
-
-#: tophat@fflewddur.github.io/prefs.js:96
-#: tophat@fflewddur.github.io/prefs.js:246
-#: tophat@fflewddur.github.io/prefs.js:410
-msgid "Filesystem to monitor"
-msgstr "Sistema de arquivos para monitorar"
-
-#: tophat@fflewddur.github.io/prefs.js:99
-#: tophat@fflewddur.github.io/prefs.js:253
-#: tophat@fflewddur.github.io/prefs.js:417
-msgid "Network"
-msgstr "Rede"
-
-#: tophat@fflewddur.github.io/prefs.js:100
-#: tophat@fflewddur.github.io/prefs.js:254
-#: tophat@fflewddur.github.io/prefs.js:418
-msgid "Show the network monitor"
-msgstr "Mostrar o monitor de rede"
-
-#: tophat@fflewddur.github.io/prefs.js:102
-#: tophat@fflewddur.github.io/prefs.js:256
-#: tophat@fflewddur.github.io/prefs.js:420
-msgid "Bytes"
-msgstr "Bytes"
-
-#: tophat@fflewddur.github.io/prefs.js:103
-#: tophat@fflewddur.github.io/prefs.js:257
-#: tophat@fflewddur.github.io/prefs.js:421
-msgid "Bits"
-msgstr "Bits"
-
-#: tophat@fflewddur.github.io/prefs.js:104
-#: tophat@fflewddur.github.io/prefs.js:258
-#: tophat@fflewddur.github.io/prefs.js:422
-msgid "Measurement unit"
-msgstr "Unidade de medida"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:221
-msgid "Processor usage"
-msgstr "Uso do processador"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:224
-msgid "Processor utilization:"
+#: src/accelerator.ts:285
+#, fuzzy
+msgid "Utilization:"
 msgstr "Utilização do processador:"
 
-#: tophat@fflewddur.github.io/lib/cpu.js:252
-#: tophat@fflewddur.github.io/lib/fs.js:301
-#: tophat@fflewddur.github.io/lib/mem.js:275
-#: tophat@fflewddur.github.io/lib/net.js:183
-#, javascript-format
-msgid "%d min ago"
-msgid_plural "%d mins ago"
-msgstr[0] "%d min atrás"
-msgstr[1] "%d minutos atrás"
+#: src/accelerator.ts:288
+#, fuzzy
+msgid "Memory:"
+msgstr "Memória"
 
-#: tophat@fflewddur.github.io/lib/cpu.js:255
-#: tophat@fflewddur.github.io/lib/fs.js:304
-#: tophat@fflewddur.github.io/lib/mem.js:278
-#: tophat@fflewddur.github.io/lib/net.js:186
-msgid "now"
-msgstr "agora"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:258
-#: tophat@fflewddur.github.io/lib/fs.js:307
-#: tophat@fflewddur.github.io/lib/mem.js:281
-msgid "Top processes"
-msgstr "Principais processos"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:275
-msgid "System uptime"
-msgstr "Tempo de atividade do sistema"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:312
-msgid "model n/a"
-msgstr "modelo n/d"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:321
-msgid "Frequency:"
-msgstr "Frequência:"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:327
-#: tophat@fflewddur.github.io/lib/cpu.js:341
-#: tophat@fflewddur.github.io/lib/fs.js:271
-#: tophat@fflewddur.github.io/lib/fs.js:277
-msgid "n/a"
-msgstr "n/d"
-
-#: tophat@fflewddur.github.io/lib/cpu.js:335
+#: src/accelerator.ts:291 src/cpu.ts:199
 msgid "Temperature:"
 msgstr "Temperatura:"
 
-#: tophat@fflewddur.github.io/lib/cpu.js:596
+#: src/cpu.ts:165
+msgid "Processor usage"
+msgstr "Uso do processador"
+
+#: src/cpu.ts:171
+msgid "Processor utilization:"
+msgstr "Utilização do processador:"
+
+#: src/cpu.ts:189
+msgid "Frequency:"
+msgstr "Frequência:"
+
+#: src/cpu.ts:215 src/disk.ts:231 src/mem.ts:168
+msgid "Top processes"
+msgstr "Principais processos"
+
+#: src/cpu.ts:233
+msgid "System uptime"
+msgstr "Tempo de atividade do sistema"
+
+#: src/cpu.ts:342
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d dia"
 msgstr[1] "%d dias"
 
-#: tophat@fflewddur.github.io/lib/cpu.js:599
+#: src/cpu.ts:345
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d hora"
 msgstr[1] "%d horas"
 
-#: tophat@fflewddur.github.io/lib/cpu.js:601
+#: src/cpu.ts:347
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d minuto"
 msgstr[1] "%d minutos"
 
-#: tophat@fflewddur.github.io/lib/fs.js:269
-msgid "Writing:"
-msgstr "Escrita:"
+#: src/disk.ts:181 src/prefs.ts:455
+msgid "Disk activity"
+msgstr "Atividade do disco"
 
-#: tophat@fflewddur.github.io/lib/fs.js:275
+#: src/disk.ts:187
 msgid "Reading:"
 msgstr "Leitura:"
 
-#: tophat@fflewddur.github.io/lib/fs.js:292
-msgid "Write"
-msgstr "Escrita"
+#: src/disk.ts:196
+msgid "Writing:"
+msgstr "Escrita:"
 
-#: tophat@fflewddur.github.io/lib/fs.js:297
-msgid "Read"
-msgstr "Leitura"
+#: src/disk.ts:207
+msgid "Total read:"
+msgstr ""
 
-#: tophat@fflewddur.github.io/lib/fs.js:313
+#: src/disk.ts:216
+msgid "Total written:"
+msgstr ""
+
+#: src/disk.ts:239
 msgid "Writing"
 msgstr "Escrita"
 
-#: tophat@fflewddur.github.io/lib/fs.js:315
+#: src/disk.ts:244
 msgid "Reading"
 msgstr "Leitura"
 
-#: tophat@fflewddur.github.io/lib/fs.js:331
+#: src/disk.ts:262 src/prefs.ts:479
 msgid "Filesystem usage"
 msgstr "Uso do sistema de arquivos"
 
-#: tophat@fflewddur.github.io/lib/mem.js:233
+#: src/history.ts:442
+msgid "now"
+msgstr "agora"
+
+#: src/mem.ts:126
 msgid "Memory usage"
 msgstr "Uso de memória"
 
-#: tophat@fflewddur.github.io/lib/mem.js:236
+#: src/mem.ts:132
 msgid "RAM used:"
 msgstr "Memória RAM usada:"
 
-#: tophat@fflewddur.github.io/lib/mem.js:241
-#: tophat@fflewddur.github.io/lib/mem.js:251
-msgid "size n/a"
-msgstr "tamanho n/d"
-
-#: tophat@fflewddur.github.io/lib/mem.js:246
+#: src/mem.ts:147
 msgid "Swap used:"
 msgstr "Swap usado:"
 
-#: tophat@fflewddur.github.io/lib/net.js:150
+#: src/monitor.ts:270
+msgid "Unable to open the selected monitor application"
+msgstr ""
+
+#: src/monitor.ts:272
+msgid "Resources is not installed."
+msgstr ""
+
+#: src/monitor.ts:273
+msgid "GNOME System Monitor is not installed."
+msgstr ""
+
+#: src/monitor.ts:389
+#, javascript-format
+msgid "%d min ago"
+msgid_plural "%d mins ago"
+msgstr[0] "%d min atrás"
+msgstr[1] "%d minutos atrás"
+
+#: src/net.ts:360
 msgid "Network activity"
 msgstr "Atividade de rede"
 
-#: tophat@fflewddur.github.io/lib/net.js:153
+#: src/net.ts:366
 msgid "Sending:"
 msgstr "Enviando:"
 
-#: tophat@fflewddur.github.io/lib/net.js:158
+#: src/net.ts:375
 msgid "Receiving:"
 msgstr "Recebendo:"
 
-#: tophat@fflewddur.github.io/lib/net.js:174
-msgid "Send"
-msgstr "Enviando"
+#: src/net.ts:386
+msgid "Total sent:"
+msgstr ""
 
-#: tophat@fflewddur.github.io/lib/net.js:179
-msgid "Recv"
-msgstr "Recebend"
+#: src/net.ts:395
+msgid "Total received:"
+msgstr ""
+
+#: src/prefs.ts:67 src/prefs.ts:71
+msgid "General"
+msgstr "Geral"
+
+#: src/prefs.ts:76
+msgid "Left edge"
+msgstr "Borda esquerda"
+
+#: src/prefs.ts:77
+msgid "Left"
+msgstr "Esquerda"
+
+#: src/prefs.ts:78
+msgid "Center"
+msgstr "Centro"
+
+#: src/prefs.ts:79
+msgid "Right"
+msgstr "Direita"
+
+#: src/prefs.ts:80
+msgid "Right edge"
+msgstr "Borda direita"
+
+#: src/prefs.ts:82
+msgid "Position in panel"
+msgstr "Posição no painel"
+
+#: src/prefs.ts:90
+msgid "Slow"
+msgstr "Devagar"
+
+#: src/prefs.ts:91
+msgid "Medium"
+msgstr "Mediano"
+
+#: src/prefs.ts:92
+msgid "Fast"
+msgstr "Rápido"
+
+#: src/prefs.ts:93
+#, fuzzy
+msgid "Faster"
+msgstr "Rápido"
+
+#: src/prefs.ts:94
+#, fuzzy
+msgid "Fastest"
+msgstr "Rápido"
+
+#: src/prefs.ts:95
+msgid "Refresh speed"
+msgstr "Velocidade da atualização"
+
+#: src/prefs.ts:98
+#, fuzzy
+msgid "System Monitor"
+msgstr "Sistema de arquivos para monitorar"
+
+#: src/prefs.ts:99
+msgid "Resources"
+msgstr ""
+
+#: src/prefs.ts:101
+msgid "Application opened by monitor buttons"
+msgstr ""
+
+#: src/prefs.ts:113
+msgid "Use system accent color"
+msgstr ""
+
+#: src/prefs.ts:119
+msgid "Meter color"
+msgstr "Cor do medidor"
+
+#: src/prefs.ts:120
+msgid "Round meter bars"
+msgstr ""
+
+#: src/prefs.ts:123
+msgid "Show icons beside monitors"
+msgstr "Mostrar ícones ao lado dos medidores"
+
+#: src/prefs.ts:127
+msgid "Show action buttons in menus"
+msgstr ""
+
+#: src/prefs.ts:134
+msgid "Group top processes by command"
+msgstr ""
+
+#: src/prefs.ts:147
+#, fuzzy
+msgid "Monitor order"
+msgstr "Mostrar monitor para"
+
+#: src/prefs.ts:148
+msgid "Order of the monitors in the panel"
+msgstr ""
+
+#: src/prefs.ts:151 src/prefs.ts:201 src/prefs.ts:205
+msgid "CPU"
+msgstr ""
+
+#: src/prefs.ts:152 src/prefs.ts:384 src/prefs.ts:388
+msgid "Memory"
+msgstr "Memória"
+
+#: src/prefs.ts:153 src/prefs.ts:451
+msgid "Disk"
+msgstr "Disco"
+
+#: src/prefs.ts:154 src/prefs.ts:591 src/prefs.ts:595
+msgid "Network"
+msgstr "Rede"
+
+#: src/prefs.ts:155 src/prefs.ts:323 src/prefs.ts:326
+msgid "GPU"
+msgstr ""
+
+#: src/prefs.ts:156 src/prefs.ts:353 src/prefs.ts:356
+msgid "NPU"
+msgstr ""
+
+#: src/prefs.ts:187
+msgid "Move up"
+msgstr ""
+
+#: src/prefs.ts:188
+msgid "Move down"
+msgstr ""
+
+#: src/prefs.ts:209
+msgid "Show the CPU monitor"
+msgstr "Mostrar o monitor da CPU"
+
+#: src/prefs.ts:213 src/prefs.ts:396 src/prefs.ts:487
+msgid "Usage meter"
+msgstr "Medidor de uso"
+
+#: src/prefs.ts:214 src/prefs.ts:397 src/prefs.ts:488
+msgid "Numeric value"
+msgstr "Valor numérico"
+
+#: src/prefs.ts:215 src/prefs.ts:398 src/prefs.ts:489
+msgid "Both meter and value"
+msgstr "Medidor e valor numérico"
+
+#: src/prefs.ts:217 src/prefs.ts:400 src/prefs.ts:491
+msgid "Show as"
+msgstr "Mostrar como"
+
+#: src/prefs.ts:224 src/prefs.ts:331 src/prefs.ts:362 src/prefs.ts:407
+#: src/prefs.ts:498
+msgid "Show usage value in panel"
+msgstr ""
+
+#: src/prefs.ts:242
+msgid "Show meter as a line chart"
+msgstr ""
+
+#: src/prefs.ts:253
+msgid "Show separators between cores"
+msgstr ""
+
+#: src/prefs.ts:263 src/prefs.ts:280 src/prefs.ts:343 src/prefs.ts:374
+#: src/prefs.ts:440 src/prefs.ts:473 src/prefs.ts:645
+msgid "Use a softer area fill"
+msgstr ""
+
+#: src/prefs.ts:274
+msgid "Show CPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:288
+msgid "Show each core"
+msgstr "Mostrar todos os núcleos"
+
+#: src/prefs.ts:300
+msgid "Sort cores by usage"
+msgstr ""
+
+#: src/prefs.ts:312
+msgid "Normalize per-process CPU usage by CPU cores"
+msgstr ""
+
+#: src/prefs.ts:329
+#, fuzzy
+msgid "Show GPU monitors"
+msgstr "Mostrar o monitor da CPU"
+
+#: src/prefs.ts:337
+msgid "Show GPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:359
+#, fuzzy
+msgid "Show NPU monitors"
+msgstr "Mostrar o monitor da CPU"
+
+#: src/prefs.ts:368
+msgid "Show NPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:392
+msgid "Show the memory monitor"
+msgstr "Mostrar o monitor de memória"
+
+#: src/prefs.ts:421
+msgid "Show usage in GB"
+msgstr ""
+
+#: src/prefs.ts:434
+msgid "Show memory history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:459
+#, fuzzy
+msgid "Show the disk activity monitor"
+msgstr "Mostrar o monitor de disco"
+
+#: src/prefs.ts:461
+msgid "Show read/write speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:467
+msgid "Show disk activity history as area charts"
+msgstr ""
+
+#: src/prefs.ts:483
+#, fuzzy
+msgid "Show the filesystem monitor"
+msgstr "Mostrar o monitor de disco"
+
+#: src/prefs.ts:512
+#, fuzzy
+msgid "Filesystem to monitor in topbar"
+msgstr "Sistema de arquivos para monitorar"
+
+#: src/prefs.ts:522
+#, fuzzy
+msgid "Filesystems to show in menu"
+msgstr "Sistema de arquivos para monitorar"
+
+#: src/prefs.ts:537 src/prefs.ts:653 src/vitals.ts:421 src/vitals.ts:426
+#: src/vitals.ts:434 src/vitals.ts:439
+msgid "Automatic"
+msgstr ""
+
+#: src/prefs.ts:599
+msgid "Show the network monitor"
+msgstr "Mostrar o monitor de rede"
+
+#: src/prefs.ts:602
+msgid "Show upload and download as stacked bars"
+msgstr ""
+
+#: src/prefs.ts:608
+msgid "Show upload/download speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:616
+msgid "Maximum speed (Mbps)"
+msgstr ""
+
+#: src/prefs.ts:639
+msgid "Show network history as area charts"
+msgstr ""
+
+#: src/prefs.ts:673
+#, fuzzy
+msgid "Network device"
+msgstr "Atividade de rede"
+
+#: src/prefs.ts:684
+msgid "Bytes"
+msgstr "Bytes"
+
+#: src/prefs.ts:685
+msgid "Bits"
+msgstr "Bits"
+
+#: src/prefs.ts:687
+msgid "Measurement unit"
+msgstr "Unidade de medida"
+
+#, fuzzy
+#~ msgid "Show each column"
+#~ msgstr "Mostrar todos os núcleos"
+
+#~ msgid "Show animations"
+#~ msgstr "Mostrar animações"
+
+#~ msgid "Processor"
+#~ msgstr "Processador"
+
+#~ msgid "Available storage"
+#~ msgstr "Armazenamento disponivel"
+
+#~ msgid "Storage and activity"
+#~ msgstr "Armazenamento e atividade"
+
+#~ msgid "Show available storage as"
+#~ msgstr "Mostrar armazenamento disponível como"
+
+#~ msgid "model n/a"
+#~ msgstr "modelo n/d"
+
+#~ msgid "n/a"
+#~ msgstr "n/d"
+
+#~ msgid "Write"
+#~ msgstr "Escrita"
+
+#~ msgid "Read"
+#~ msgstr "Leitura"
+
+#~ msgid "size n/a"
+#~ msgstr "tamanho n/d"
+
+#~ msgid "Send"
+#~ msgstr "Enviando"
+
+#~ msgid "Recv"
+#~ msgstr "Recebend"

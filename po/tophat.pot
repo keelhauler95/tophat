@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TopHat\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-23 03:53+0200\n"
+"POT-Creation-Date: 2026-11-16 23:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,287 +18,425 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: src/cpu.ts:145
-msgid "Processor usage"
+#: src/accelerator.ts:281
+msgid "GPU activity"
 msgstr ""
 
-#: src/cpu.ts:151
-msgid "Processor utilization:"
+#: src/accelerator.ts:281
+msgid "NPU activity"
 msgstr ""
 
-#: src/cpu.ts:169
-msgid "Frequency:"
+#: src/accelerator.ts:285
+msgid "Utilization:"
 msgstr ""
 
-#: src/cpu.ts:179
+#: src/accelerator.ts:288
+msgid "Memory:"
+msgstr ""
+
+#: src/accelerator.ts:291 src/cpu.ts:199
 msgid "Temperature:"
 msgstr ""
 
-#: src/cpu.ts:195 src/disk.ts:220 src/mem.ts:172
+#: src/cpu.ts:165
+msgid "Processor usage"
+msgstr ""
+
+#: src/cpu.ts:171
+msgid "Processor utilization:"
+msgstr ""
+
+#: src/cpu.ts:189
+msgid "Frequency:"
+msgstr ""
+
+#: src/cpu.ts:215 src/disk.ts:231 src/mem.ts:168
 msgid "Top processes"
 msgstr ""
 
-#: src/cpu.ts:213
+#: src/cpu.ts:233
 msgid "System uptime"
 msgstr ""
 
-#: src/cpu.ts:322
+#: src/cpu.ts:342
 #, javascript-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cpu.ts:325
+#: src/cpu.ts:345
 #, javascript-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/cpu.ts:327
+#: src/cpu.ts:347
 #, javascript-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/disk.ts:170 src/prefs.ts:194
+#: src/disk.ts:181 src/prefs.ts:455
 msgid "Disk activity"
 msgstr ""
 
-#: src/disk.ts:176
+#: src/disk.ts:187
 msgid "Reading:"
 msgstr ""
 
-#: src/disk.ts:185
+#: src/disk.ts:196
 msgid "Writing:"
 msgstr ""
 
-#: src/disk.ts:196
+#: src/disk.ts:207
 msgid "Total read:"
 msgstr ""
 
-#: src/disk.ts:205
+#: src/disk.ts:216
 msgid "Total written:"
 msgstr ""
 
-#: src/disk.ts:228
+#: src/disk.ts:239
 msgid "Writing"
 msgstr ""
 
-#: src/disk.ts:233
+#: src/disk.ts:244
 msgid "Reading"
 msgstr ""
 
-#: src/disk.ts:251 src/prefs.ts:200
+#: src/disk.ts:262 src/prefs.ts:479
 msgid "Filesystem usage"
 msgstr ""
 
-#: src/history.ts:278
+#: src/history.ts:442
 msgid "now"
 msgstr ""
 
-#: src/mem.ts:130
+#: src/mem.ts:126
 msgid "Memory usage"
 msgstr ""
 
-#: src/mem.ts:136
+#: src/mem.ts:132
 msgid "RAM used:"
 msgstr ""
 
-#: src/mem.ts:151
+#: src/mem.ts:147
 msgid "Swap used:"
 msgstr ""
 
-#: src/monitor.ts:315
+#: src/monitor.ts:270
+msgid "Unable to open the selected monitor application"
+msgstr ""
+
+#: src/monitor.ts:272
+msgid "Resources is not installed."
+msgstr ""
+
+#: src/monitor.ts:273
+msgid "GNOME System Monitor is not installed."
+msgstr ""
+
+#: src/monitor.ts:389
 #, javascript-format
 msgid "%d min ago"
 msgid_plural "%d mins ago"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/net.ts:160
+#: src/net.ts:360
 msgid "Network activity"
 msgstr ""
 
-#: src/net.ts:166
+#: src/net.ts:366
 msgid "Sending:"
 msgstr ""
 
-#: src/net.ts:175
+#: src/net.ts:375
 msgid "Receiving:"
 msgstr ""
 
-#: src/net.ts:186
+#: src/net.ts:386
 msgid "Total sent:"
 msgstr ""
 
-#: src/net.ts:195
+#: src/net.ts:395
 msgid "Total received:"
 msgstr ""
 
-#: src/prefs.ts:65 src/prefs.ts:69
+#: src/prefs.ts:67 src/prefs.ts:71
 msgid "General"
 msgstr ""
 
-#: src/prefs.ts:74
+#: src/prefs.ts:76
 msgid "Left edge"
 msgstr ""
 
-#: src/prefs.ts:75
+#: src/prefs.ts:77
 msgid "Left"
 msgstr ""
 
-#: src/prefs.ts:76
+#: src/prefs.ts:78
 msgid "Center"
 msgstr ""
 
-#: src/prefs.ts:77
+#: src/prefs.ts:79
 msgid "Right"
 msgstr ""
 
-#: src/prefs.ts:78
+#: src/prefs.ts:80
 msgid "Right edge"
 msgstr ""
 
-#: src/prefs.ts:80
+#: src/prefs.ts:82
 msgid "Position in panel"
 msgstr ""
 
-#: src/prefs.ts:88
+#: src/prefs.ts:90
 msgid "Slow"
 msgstr ""
 
-#: src/prefs.ts:89
+#: src/prefs.ts:91
 msgid "Medium"
 msgstr ""
 
-#: src/prefs.ts:90
+#: src/prefs.ts:92
 msgid "Fast"
 msgstr ""
 
-#: src/prefs.ts:91
+#: src/prefs.ts:93
+msgid "Faster"
+msgstr ""
+
+#: src/prefs.ts:94
+msgid "Fastest"
+msgstr ""
+
+#: src/prefs.ts:95
 msgid "Refresh speed"
 msgstr ""
 
+#: src/prefs.ts:98
+msgid "System Monitor"
+msgstr ""
+
 #: src/prefs.ts:99
-msgid "Use system accent color"
+msgid "Resources"
 msgstr ""
 
-#: src/prefs.ts:105
-msgid "Meter color"
-msgstr ""
-
-#: src/prefs.ts:106
-msgid "Round meter bars"
-msgstr ""
-
-#: src/prefs.ts:109
-msgid "Show icons beside monitors"
+#: src/prefs.ts:101
+msgid "Application opened by monitor buttons"
 msgstr ""
 
 #: src/prefs.ts:113
-msgid "Show action buttons in menus"
+msgid "Use system accent color"
+msgstr ""
+
+#: src/prefs.ts:119
+msgid "Meter color"
 msgstr ""
 
 #: src/prefs.ts:120
+msgid "Round meter bars"
+msgstr ""
+
+#: src/prefs.ts:123
+msgid "Show icons beside monitors"
+msgstr ""
+
+#: src/prefs.ts:127
+msgid "Show action buttons in menus"
+msgstr ""
+
+#: src/prefs.ts:134
 msgid "Group top processes by command"
 msgstr ""
 
-#: src/prefs.ts:130 src/prefs.ts:134
-msgid "CPU"
-msgstr ""
-
-#: src/prefs.ts:138
-msgid "Show the CPU monitor"
-msgstr ""
-
-#: src/prefs.ts:142 src/prefs.ts:177 src/prefs.ts:208
-msgid "Usage meter"
-msgstr ""
-
-#: src/prefs.ts:143 src/prefs.ts:178 src/prefs.ts:209
-msgid "Numeric value"
-msgstr ""
-
-#: src/prefs.ts:144 src/prefs.ts:179 src/prefs.ts:210
-msgid "Both meter and value"
-msgstr ""
-
-#: src/prefs.ts:145 src/prefs.ts:180 src/prefs.ts:211
-msgid "Show as"
+#: src/prefs.ts:147
+msgid "Monitor order"
 msgstr ""
 
 #: src/prefs.ts:148
-msgid "Show each core"
+msgid "Order of the monitors in the panel"
 msgstr ""
 
-#: src/prefs.ts:151
-msgid "Sort cores by usage"
+#: src/prefs.ts:151 src/prefs.ts:201 src/prefs.ts:205
+msgid "CPU"
 msgstr ""
 
-#: src/prefs.ts:155
-msgid "Normalize per-process CPU usage by CPU cores"
-msgstr ""
-
-#: src/prefs.ts:165 src/prefs.ts:169
+#: src/prefs.ts:152 src/prefs.ts:384 src/prefs.ts:388
 msgid "Memory"
 msgstr ""
 
-#: src/prefs.ts:173
-msgid "Show the memory monitor"
-msgstr ""
-
-#: src/prefs.ts:183
-msgid "Show usage in GB"
-msgstr ""
-
-#: src/prefs.ts:190
+#: src/prefs.ts:153 src/prefs.ts:451
 msgid "Disk"
 msgstr ""
 
-#: src/prefs.ts:198
+#: src/prefs.ts:154 src/prefs.ts:591 src/prefs.ts:595
+msgid "Network"
+msgstr ""
+
+#: src/prefs.ts:155 src/prefs.ts:323 src/prefs.ts:326
+msgid "GPU"
+msgstr ""
+
+#: src/prefs.ts:156 src/prefs.ts:353 src/prefs.ts:356
+msgid "NPU"
+msgstr ""
+
+#: src/prefs.ts:187
+msgid "Move up"
+msgstr ""
+
+#: src/prefs.ts:188
+msgid "Move down"
+msgstr ""
+
+#: src/prefs.ts:209
+msgid "Show the CPU monitor"
+msgstr ""
+
+#: src/prefs.ts:213 src/prefs.ts:396 src/prefs.ts:487
+msgid "Usage meter"
+msgstr ""
+
+#: src/prefs.ts:214 src/prefs.ts:397 src/prefs.ts:488
+msgid "Numeric value"
+msgstr ""
+
+#: src/prefs.ts:215 src/prefs.ts:398 src/prefs.ts:489
+msgid "Both meter and value"
+msgstr ""
+
+#: src/prefs.ts:217 src/prefs.ts:400 src/prefs.ts:491
+msgid "Show as"
+msgstr ""
+
+#: src/prefs.ts:224 src/prefs.ts:331 src/prefs.ts:362 src/prefs.ts:407
+#: src/prefs.ts:498
+msgid "Show usage value in panel"
+msgstr ""
+
+#: src/prefs.ts:242
+msgid "Show meter as a line chart"
+msgstr ""
+
+#: src/prefs.ts:253
+msgid "Show separators between cores"
+msgstr ""
+
+#: src/prefs.ts:263 src/prefs.ts:280 src/prefs.ts:343 src/prefs.ts:374
+#: src/prefs.ts:440 src/prefs.ts:473 src/prefs.ts:645
+msgid "Use a softer area fill"
+msgstr ""
+
+#: src/prefs.ts:274
+msgid "Show CPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:288
+msgid "Show each core"
+msgstr ""
+
+#: src/prefs.ts:300
+msgid "Sort cores by usage"
+msgstr ""
+
+#: src/prefs.ts:312
+msgid "Normalize per-process CPU usage by CPU cores"
+msgstr ""
+
+#: src/prefs.ts:329
+msgid "Show GPU monitors"
+msgstr ""
+
+#: src/prefs.ts:337
+msgid "Show GPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:359
+msgid "Show NPU monitors"
+msgstr ""
+
+#: src/prefs.ts:368
+msgid "Show NPU history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:392
+msgid "Show the memory monitor"
+msgstr ""
+
+#: src/prefs.ts:421
+msgid "Show usage in GB"
+msgstr ""
+
+#: src/prefs.ts:434
+msgid "Show memory history as an area chart"
+msgstr ""
+
+#: src/prefs.ts:459
 msgid "Show the disk activity monitor"
 msgstr ""
 
-#: src/prefs.ts:204
+#: src/prefs.ts:461
+msgid "Show read/write speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:467
+msgid "Show disk activity history as area charts"
+msgstr ""
+
+#: src/prefs.ts:483
 msgid "Show the filesystem monitor"
 msgstr ""
 
-#: src/prefs.ts:216
+#: src/prefs.ts:512
 msgid "Filesystem to monitor in topbar"
 msgstr ""
 
-#: src/prefs.ts:225
+#: src/prefs.ts:522
 msgid "Filesystems to show in menu"
 msgstr ""
 
-#: src/prefs.ts:239 src/prefs.ts:305 src/vitals.ts:421 src/vitals.ts:426
+#: src/prefs.ts:537 src/prefs.ts:653 src/vitals.ts:421 src/vitals.ts:426
 #: src/vitals.ts:434 src/vitals.ts:439
 msgid "Automatic"
 msgstr ""
 
-#: src/prefs.ts:293 src/prefs.ts:297
-msgid "Network"
-msgstr ""
-
-#: src/prefs.ts:301
+#: src/prefs.ts:599
 msgid "Show the network monitor"
 msgstr ""
 
-#: src/prefs.ts:325
+#: src/prefs.ts:602
+msgid "Show upload and download as stacked bars"
+msgstr ""
+
+#: src/prefs.ts:608
+msgid "Show upload/download speeds in panel"
+msgstr ""
+
+#: src/prefs.ts:616
+msgid "Maximum speed (Mbps)"
+msgstr ""
+
+#: src/prefs.ts:639
+msgid "Show network history as area charts"
+msgstr ""
+
+#: src/prefs.ts:673
 msgid "Network device"
 msgstr ""
 
-#: src/prefs.ts:335
+#: src/prefs.ts:684
 msgid "Bytes"
 msgstr ""
 
-#: src/prefs.ts:336
+#: src/prefs.ts:685
 msgid "Bits"
 msgstr ""
 
-#: src/prefs.ts:338
+#: src/prefs.ts:687
 msgid "Measurement unit"
 msgstr ""
